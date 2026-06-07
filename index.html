@@ -1,9 +1,8 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MONSTER FX — $100 Growth Machine</title>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -19,7 +18,7 @@
   --table-head:rgba(0,245,255,0.06); --table-row:rgba(255,255,255,0.02);
   --input-bg:rgba(0,245,255,0.05); --shadow:0 8px 32px rgba(0,0,0,0.4);
   --purple:#c77dff; --orange:#ff9500;
-  --mob-nav-h:64px;
+  --mode-icon:"🌙";
 }
 [data-theme="light"] {
   --bg:#f0f4f8; --bg2:#e8eef5; --bg3:#dde5f0; --bg4:#d0daea;
@@ -30,11 +29,13 @@
   --table-head:rgba(0,102,204,0.08); --table-row:rgba(0,0,0,0.02);
   --input-bg:rgba(0,102,204,0.06); --shadow:0 8px 32px rgba(0,0,0,0.12);
   --purple:#7733cc; --orange:#cc6600;
+  --mode-icon:"☀️";
 }
 
 *{margin:0;padding:0;box-sizing:border-box;}
 body{background:var(--bg);color:var(--text);font-family:'Exo 2',sans-serif;min-height:100vh;overflow-x:hidden;transition:background 0.3s,color 0.3s;}
 
+/* GRID BG — dark only */
 body:not([data-theme="light"])::before{
   content:'';position:fixed;top:0;left:0;width:100%;height:100%;
   background-image:linear-gradient(rgba(0,245,255,0.025) 1px,transparent 1px),
@@ -51,7 +52,7 @@ body:not([data-theme="light"])::before{
   display:flex;align-items:center;justify-content:space-between;
   padding:16px 24px;border-radius:16px;margin-bottom:16px;
   background:var(--card-bg);border:1px solid var(--card-border);
-  position:relative;overflow:hidden;flex-wrap:wrap;gap:10px;
+  position:relative;overflow:hidden;
 }
 .hdr::after{
   content:'';position:absolute;top:0;left:0;right:0;height:2px;
@@ -59,6 +60,7 @@ body:not([data-theme="light"])::before{
   animation:sweep 4s linear infinite;background-size:200%;
 }
 @keyframes sweep{0%{background-position:-100%}100%{background-position:300%}}
+
 .logo{display:flex;align-items:center;gap:12px;}
 .logo-icon{font-size:32px;animation:bob 2.5s ease-in-out infinite;}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
@@ -66,7 +68,8 @@ body:not([data-theme="light"])::before{
   background:linear-gradient(90deg,var(--accent),var(--accent2));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;}
 .logo p{font-family:'Share Tech Mono';font-size:10px;color:var(--muted);letter-spacing:2px;margin-top:2px;}
-.hdr-right{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+
+.hdr-right{display:flex;align-items:center;gap:12px;}
 .live-pill{display:flex;align-items:center;gap:6px;background:rgba(57,255,20,0.1);
   border:1px solid var(--win);border-radius:20px;padding:5px 12px;
   font-family:'Share Tech Mono';font-size:10px;color:var(--win);
@@ -75,16 +78,12 @@ body:not([data-theme="light"])::before{
 .live-dot{width:7px;height:7px;background:var(--win);border-radius:50%;}
 #clk{font-family:'Orbitron';font-size:13px;color:var(--accent);}
 
-/* ══ HEADER BUTTONS ══ */
-.hdr-btn{
+.mode-btn{
   background:var(--card-bg);border:1px solid var(--card-border);
-  border-radius:10px;padding:8px 12px;cursor:pointer;font-size:14px;
-  transition:all 0.2s;color:var(--text);white-space:nowrap;
-  display:flex;align-items:center;gap:6px;
-  font-family:'Orbitron';font-size:10px;font-weight:700;letter-spacing:1px;
+  border-radius:10px;padding:8px 14px;cursor:pointer;font-size:16px;
+  transition:all 0.2s;color:var(--text);
 }
-.hdr-btn:hover{border-color:var(--accent);transform:scale(1.05);}
-.hdr-btn.mobile-active{border-color:var(--accent3);background:rgba(255,215,0,0.1);color:var(--accent3);}
+.mode-btn:hover{border-color:var(--accent);transform:scale(1.05);}
 
 /* ══ CAPITAL HERO ══ */
 .capital-hero{
@@ -104,15 +103,25 @@ body:not([data-theme="light"])::before{
 .cap-growth{font-family:'Orbitron';font-size:22px;font-weight:700;}
 .cap-growth.pos{color:var(--win);}
 .cap-growth.neg{color:var(--accent2);}
+
+/* MILESTONES */
 .milestones{display:flex;gap:8px;flex-wrap:wrap;}
-.ms-pill{padding:5px 12px;border-radius:20px;font-size:10px;font-family:'Share Tech Mono';border:1px solid var(--border);color:var(--muted);transition:all 0.3s;}
+.ms-pill{
+  padding:5px 12px;border-radius:20px;font-size:10px;font-family:'Share Tech Mono';
+  border:1px solid var(--border);color:var(--muted);
+  transition:all 0.3s;
+}
 .ms-pill.done{background:rgba(57,255,20,0.15);border-color:var(--win);color:var(--win);}
 .ms-pill.next{background:rgba(255,215,0,0.1);border-color:var(--accent3);color:var(--accent3);animation:nextGlow 1.5s ease-in-out infinite;}
 @keyframes nextGlow{0%,100%{box-shadow:0 0 0 rgba(255,215,0,0)}50%{box-shadow:0 0 12px rgba(255,215,0,0.3)}}
 
 /* ══ STAT GRID ══ */
 .stats{display:grid;grid-template-columns:repeat(7,1fr);gap:10px;margin-bottom:16px;}
-.sc{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:14px 12px;position:relative;overflow:hidden;transition:transform 0.2s,border-color 0.2s;cursor:default;}
+.sc{
+  background:var(--card-bg);border:1px solid var(--card-border);
+  border-radius:12px;padding:14px 12px;position:relative;overflow:hidden;
+  transition:transform 0.2s,border-color 0.2s;cursor:default;
+}
 .sc:hover{transform:translateY(-2px);border-color:var(--accent);}
 .sc::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;}
 .sc.c1::after{background:var(--accent);}
@@ -140,17 +149,31 @@ body:not([data-theme="light"])::before{
 
 /* ══ PANELS ══ */
 .panel{background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;overflow:hidden;}
-.ph{padding:12px 18px;border-bottom:1px solid var(--card-border);display:flex;align-items:center;gap:8px;background:var(--table-head);}
+.ph{
+  padding:12px 18px;border-bottom:1px solid var(--card-border);
+  display:flex;align-items:center;gap:8px;background:var(--table-head);
+}
 .ph h2{font-family:'Orbitron';font-size:11px;letter-spacing:2px;color:var(--accent);}
 .ph-right{margin-left:auto;display:flex;gap:8px;align-items:center;}
 
-/* ══ GMAIL ══ */
+/* ══ GMAIL SIGNAL FETCHER ══ */
 .gmail-body{padding:16px;}
-.fetch-btn{width:100%;padding:12px;border-radius:10px;cursor:pointer;background:linear-gradient(135deg,rgba(234,67,53,0.15),rgba(66,133,244,0.15));border:1px solid rgba(234,67,53,0.4);color:var(--text);font-family:'Orbitron';font-size:11px;font-weight:700;letter-spacing:2px;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.fetch-btn{
+  width:100%;padding:12px;border-radius:10px;cursor:pointer;
+  background:linear-gradient(135deg,rgba(234,67,53,0.15),rgba(66,133,244,0.15));
+  border:1px solid rgba(234,67,53,0.4);
+  color:var(--text);font-family:'Orbitron';font-size:11px;font-weight:700;
+  letter-spacing:2px;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:8px;
+}
 .fetch-btn:hover{background:linear-gradient(135deg,rgba(234,67,53,0.3),rgba(66,133,244,0.3));border-color:rgba(234,67,53,0.8);}
 .fetch-btn:disabled{opacity:0.5;cursor:not-allowed;}
+
 .signal-cards{margin-top:12px;display:flex;flex-direction:column;gap:8px;max-height:280px;overflow-y:auto;}
-.sig-card{border:1px solid var(--card-border);border-radius:10px;padding:12px;cursor:pointer;transition:all 0.2s;background:var(--table-row);display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;}
+.sig-card{
+  border:1px solid var(--card-border);border-radius:10px;padding:12px;
+  cursor:pointer;transition:all 0.2s;background:var(--table-row);
+  display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;
+}
 .sig-card:hover{border-color:var(--accent);background:var(--glass);}
 .sig-card.BUY{border-left:3px solid var(--win);}
 .sig-card.SELL{border-left:3px solid var(--accent2);}
@@ -160,6 +183,7 @@ body:not([data-theme="light"])::before{
 .sig-dir{font-family:'Orbitron';font-size:11px;font-weight:700;padding:4px 10px;border-radius:20px;}
 .sig-dir.BUY{background:rgba(57,255,20,0.15);color:var(--win);border:1px solid rgba(57,255,20,0.4);}
 .sig-dir.SELL{background:rgba(255,62,108,0.15);color:var(--accent2);border:1px solid rgba(255,62,108,0.4);}
+
 .fetch-status{font-family:'Share Tech Mono';font-size:11px;color:var(--muted);text-align:center;padding:8px;margin-top:8px;}
 
 /* ══ TRADE FORM ══ */
@@ -167,15 +191,26 @@ body:not([data-theme="light"])::before{
 .fr{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
 .fg{display:flex;flex-direction:column;gap:5px;}
 .fg label{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
-.fg input,.fg select{background:var(--input-bg);border:1px solid var(--card-border);border-radius:8px;padding:9px 12px;color:var(--text);font-family:'Share Tech Mono';font-size:12px;outline:none;transition:border-color 0.2s;width:100%;}
+.fg input,.fg select{
+  background:var(--input-bg);border:1px solid var(--card-border);
+  border-radius:8px;padding:9px 12px;color:var(--text);
+  font-family:'Share Tech Mono';font-size:12px;outline:none;
+  transition:border-color 0.2s;
+}
 .fg input:focus,.fg select:focus{border-color:var(--accent);}
 .fg select option{background:var(--bg3);color:var(--text);}
+
 .dir-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
-.db{padding:12px;border-radius:8px;border:2px solid transparent;cursor:pointer;font-family:'Orbitron';font-size:12px;font-weight:700;transition:all 0.2s;background:transparent;color:var(--muted);}
+.db{
+  padding:12px;border-radius:8px;border:2px solid transparent;
+  cursor:pointer;font-family:'Orbitron';font-size:12px;font-weight:700;
+  transition:all 0.2s;background:transparent;color:var(--muted);
+}
 .db.buy{border-color:rgba(57,255,20,0.3);}
 .db.buy:hover,.db.buy.active{background:rgba(57,255,20,0.15);border-color:var(--win);color:var(--win);}
 .db.sell{border-color:rgba(255,62,108,0.3);}
 .db.sell:hover,.db.sell.active{background:rgba(255,62,108,0.15);border-color:var(--accent2);color:var(--accent2);}
+
 .res-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px;}
 .rb{padding:9px;border-radius:7px;border:1px solid transparent;cursor:pointer;font-size:10px;font-weight:600;transition:all 0.2s;background:transparent;letter-spacing:1px;}
 .rb.win{border-color:rgba(57,255,20,0.3);color:var(--muted);}
@@ -184,11 +219,18 @@ body:not([data-theme="light"])::before{
 .rb.loss:hover,.rb.loss.active{background:rgba(255,62,108,0.2);border-color:var(--accent2);color:var(--accent2);}
 .rb.pend{border-color:rgba(255,215,0,0.3);color:var(--muted);}
 .rb.pend:hover,.rb.pend.active{background:rgba(255,215,0,0.2);border-color:var(--accent3);color:var(--accent3);}
-.risk-box{background:var(--table-row);border:1px solid var(--card-border);border-radius:8px;padding:12px;margin-bottom:10px;}
+
+/* CAPITAL RISK CALC */
+.risk-box{
+  background:var(--table-row);border:1px solid var(--card-border);
+  border-radius:8px;padding:12px;margin-bottom:10px;
+}
 .risk-box .risk-title{font-size:10px;color:var(--muted);letter-spacing:2px;margin-bottom:8px;}
 .risk-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;text-align:center;}
 .rg-item .rv{font-family:'Orbitron';font-size:14px;font-weight:700;}
 .rg-item .rl{font-size:9px;color:var(--muted);margin-top:2px;}
+
+/* VERDICT */
 .vbox{border-radius:8px;padding:12px;margin-bottom:10px;display:none;border:1px solid;}
 .vbox.show{display:block;animation:pop 0.3s ease;}
 @keyframes pop{from{opacity:0;transform:scale(0.97)}to{opacity:1;transform:scale(1)}}
@@ -200,7 +242,14 @@ body:not([data-theme="light"])::before{
 .vbox.caut .vt{color:var(--accent3);}
 .vbox.stop .vt{color:var(--accent2);}
 .vd{font-size:10px;color:var(--text2);line-height:1.6;}
-.sub-btn{width:100%;padding:13px;border-radius:9px;cursor:pointer;background:linear-gradient(135deg,rgba(0,245,255,0.15),rgba(255,62,108,0.15));border:1px solid var(--accent);color:var(--accent);font-family:'Orbitron';font-size:12px;font-weight:700;letter-spacing:2px;transition:all 0.2s;}
+
+.sub-btn{
+  width:100%;padding:13px;border-radius:9px;cursor:pointer;
+  background:linear-gradient(135deg,rgba(0,245,255,0.15),rgba(255,62,108,0.15));
+  border:1px solid var(--accent);color:var(--accent);
+  font-family:'Orbitron';font-size:12px;font-weight:700;letter-spacing:2px;
+  transition:all 0.2s;
+}
 .sub-btn:hover{background:linear-gradient(135deg,rgba(0,245,255,0.25),rgba(255,62,108,0.25));box-shadow:0 0 20px rgba(0,245,255,0.15);}
 
 /* ══ CHARTS ══ */
@@ -216,6 +265,7 @@ th{padding:10px 12px;text-align:left;font-family:'Share Tech Mono';font-size:9px
 tbody tr{border-bottom:1px solid rgba(255,255,255,0.03);transition:background 0.15s;}
 tbody tr:hover{background:var(--glass);}
 td{padding:10px 12px;white-space:nowrap;vertical-align:middle;}
+
 .pc{display:flex;align-items:center;gap:6px;}
 .pf{font-size:18px;line-height:1;}
 .pn{font-family:'Share Tech Mono';font-size:11px;font-weight:600;color:var(--text);}
@@ -223,6 +273,9 @@ td{padding:10px 12px;white-space:nowrap;vertical-align:middle;}
 .db2.BUY{background:rgba(57,255,20,0.12);color:var(--win);border:1px solid rgba(57,255,20,0.3);}
 .db2.SELL{background:rgba(255,62,108,0.12);color:var(--accent2);border:1px solid rgba(255,62,108,0.3);}
 .rb2{font-family:'Orbitron';font-size:9px;font-weight:700;}
+.rb2.WIN{color:var(--win);}
+.rb2.LOSS{color:var(--accent2);}
+.rb2.PENDING{color:var(--accent3);}
 .pp{font-family:'Share Tech Mono';font-size:11px;font-weight:600;}
 .pp.pos{color:var(--win);}
 .pp.neg{color:var(--accent2);}
@@ -230,10 +283,9 @@ td{padding:10px 12px;white-space:nowrap;vertical-align:middle;}
 .cb{display:flex;align-items:center;gap:5px;}
 .cbr{height:5px;width:50px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;}
 .cbf{height:100%;background:linear-gradient(90deg,var(--accent3),var(--accent));}
-.del2{background:transparent;border:1px solid rgba(255,62,108,0.25);border-radius:5px;padding:3px 7px;cursor:pointer;color:var(--accent2);font-size:10px;transition:all 0.2s;}
+.del2{background:transparent;border:1px solid rgba(255,62,108,0.25);border-radius:5px;
+  padding:3px 7px;cursor:pointer;color:var(--accent2);font-size:10px;transition:all 0.2s;}
 .del2:hover{background:rgba(255,62,108,0.15);}
-.recover-btn{background:transparent;border:1px solid rgba(255,62,108,0.5);border-radius:5px;padding:3px 7px;cursor:pointer;color:var(--accent2);font-size:9px;transition:all 0.2s;font-family:'Orbitron';letter-spacing:1px;}
-.recover-btn:hover{background:rgba(255,62,108,0.2);box-shadow:0 0 10px rgba(255,62,108,0.3);}
 
 /* ══ PAIR PERF ══ */
 .pp-wrap{padding:14px 18px;}
@@ -248,9 +300,13 @@ td{padding:10px 12px;white-space:nowrap;vertical-align:middle;}
 .ppbf.n{background:linear-gradient(90deg,var(--accent2),#ff8c00);}
 .ppv{font-family:'Share Tech Mono';font-size:11px;width:58px;text-align:right;}
 
-/* ══ EXPORT ══ */
+/* ══ EXPORT PANEL ══ */
 .exp-body{padding:16px;display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.exp-btn{padding:12px;border-radius:9px;cursor:pointer;font-family:'Orbitron';font-size:10px;font-weight:700;letter-spacing:1px;transition:all 0.2s;background:transparent;display:flex;align-items:center;justify-content:center;gap:6px;}
+.exp-btn{
+  padding:12px;border-radius:9px;cursor:pointer;font-family:'Orbitron';
+  font-size:10px;font-weight:700;letter-spacing:1px;transition:all 0.2s;
+  background:transparent;display:flex;align-items:center;justify-content:center;gap:6px;
+}
 .exp-btn:hover{transform:translateY(-2px);}
 .exp-btn.csv{border:1px solid rgba(57,255,20,0.4);color:var(--win);}
 .exp-btn.csv:hover{background:rgba(57,255,20,0.1);}
@@ -261,7 +317,7 @@ td{padding:10px 12px;white-space:nowrap;vertical-align:middle;}
 .exp-btn.clear{border:1px solid rgba(255,62,108,0.4);color:var(--accent2);}
 .exp-btn.clear:hover{background:rgba(255,62,108,0.1);}
 
-/* ══ RULES ══ */
+/* ══ RULES PANEL ══ */
 .rules-body{padding:14px;}
 .rule-item{display:flex;gap:10px;padding:9px 10px;border-radius:8px;margin-bottom:6px;border:1px solid transparent;transition:all 0.2s;}
 .rule-item:hover{border-color:var(--card-border);background:var(--glass);}
@@ -277,7 +333,13 @@ td{padding:10px 12px;white-space:nowrap;vertical-align:middle;}
 .empty .ei{font-size:36px;margin-bottom:10px;opacity:0.35;}
 
 /* ══ TOAST ══ */
-.toast{position:fixed;bottom:80px;right:24px;z-index:9999;background:var(--card-bg);border:1px solid var(--accent);border-radius:10px;padding:12px 18px;font-family:'Share Tech Mono';font-size:12px;color:var(--accent);transform:translateY(80px);opacity:0;transition:all 0.3s;pointer-events:none;max-width:300px;}
+.toast{
+  position:fixed;bottom:24px;right:24px;z-index:999;
+  background:var(--card-bg);border:1px solid var(--accent);border-radius:10px;
+  padding:12px 18px;font-family:'Share Tech Mono';font-size:12px;color:var(--accent);
+  transform:translateY(80px);opacity:0;transition:all 0.3s;pointer-events:none;
+  max-width:300px;
+}
 .toast.show{transform:translateY(0);opacity:1;}
 .toast.err{border-color:var(--accent2);color:var(--accent2);}
 .toast.ok{border-color:var(--win);color:var(--win);}
@@ -287,286 +349,10 @@ td{padding:10px 12px;white-space:nowrap;vertical-align:middle;}
 ::-webkit-scrollbar-track{background:var(--bg2);}
 ::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px;}
 
-/* ══ SPIN ══ */
-.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.2);border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;}
+/* ══ LOADING SPINNER ══ */
+.spin{display:inline-block;width:14px;height:14px;border:2px solid rgba(255,255,255,0.2);
+  border-top-color:var(--accent);border-radius:50%;animation:spin 0.7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* ══════════════════════════════════════════════
-   ██████  MOBILE MODE SYSTEM  ██████
-══════════════════════════════════════════════ */
-.mob-nav{display:none;}
-
-/* ────────────────────────────────────────────
-   MOBILE-MODE CLASS — activated by button OR auto on ≤768px
-──────────────────────────────────────────────*/
-body.mob .wrap{padding:8px 8px 80px 8px;}
-body.mob .hdr{padding:10px 14px;border-radius:12px;margin-bottom:10px;}
-body.mob .hdr .logo-icon{font-size:22px;}
-body.mob .hdr .logo h1{font-size:13px;letter-spacing:2px;}
-body.mob .hdr .logo p{display:none;}
-body.mob #clk{font-size:11px;}
-body.mob .live-pill{padding:4px 8px;font-size:9px;}
-
-/* Capital hero — 2x2 grid on mobile */
-body.mob .capital-hero{grid-template-columns:1fr 1fr;grid-template-rows:auto auto;padding:14px;gap:12px;margin-bottom:10px;}
-body.mob .cap-val{font-size:22px;}
-body.mob .cap-growth{font-size:16px;}
-body.mob .milestones{display:none;}
-
-/* Stats — 2 col on mobile */
-body.mob .stats{grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:10px;}
-body.mob .sc-val{font-size:16px;}
-body.mob .sc{padding:10px 10px;}
-
-/* Hide desktop layout, show tab panels */
-body.mob .main{display:block;margin-bottom:10px;}
-body.mob .left-col,body.mob .right-col{display:block;gap:0;}
-body.mob .tab-pane{display:none;}
-body.mob .tab-pane.active{display:block;}
-
-/* Mobile nav bar */
-body.mob .mob-nav{
-  display:flex;position:fixed;bottom:0;left:0;right:0;
-  background:var(--card-bg);border-top:1px solid var(--card-border);
-  z-index:100;padding:4px 0 8px;
-  backdrop-filter:blur(12px);
-}
-.mob-nav-item{
-  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:2px;padding:6px 4px;cursor:pointer;transition:all 0.2s;
-  border:none;background:transparent;color:var(--muted);
-  font-family:'Share Tech Mono';font-size:8px;letter-spacing:1px;
-}
-.mob-nav-item .mnicon{font-size:20px;transition:transform 0.2s;}
-.mob-nav-item.active{color:var(--accent);}
-.mob-nav-item.active .mnicon{transform:scale(1.15);}
-.mob-nav-item:hover{color:var(--accent);}
-
-/* Mobile form sizing */
-body.mob .fg input,body.mob .fg select{padding:11px 12px;font-size:13px;}
-body.mob .db{padding:14px 10px;font-size:13px;}
-body.mob .rb{padding:11px 8px;font-size:11px;}
-body.mob .sub-btn{padding:16px;font-size:13px;}
-body.mob .fetch-btn{padding:14px;font-size:12px;}
-body.mob .sig-card{padding:14px;}
-body.mob .sig-info strong{font-size:13px;}
-body.mob .sig-info span{font-size:11px;}
-body.mob .risk-grid .rv{font-size:16px;}
-body.mob .vt{font-size:13px;}
-body.mob .vd{font-size:11px;}
-body.mob .rg-item .rl{font-size:10px;}
-
-/* Mobile panel spacing */
-body.mob .panel{border-radius:12px;margin-bottom:10px;}
-body.mob .ph h2{font-size:10px;}
-body.mob .chart-wrap{padding:10px;}
-body.mob .form-body{padding:12px;}
-body.mob .gmail-body{padding:12px;}
-body.mob .exp-body{padding:12px;gap:8px;}
-body.mob .exp-btn{padding:14px 10px;font-size:10px;}
-body.mob .rules-body{padding:10px;}
-body.mob .rule-item{padding:10px 10px;}
-body.mob .rt strong{font-size:12px;}
-body.mob .rt span{font-size:10px;}
-
-/* Mobile table — card mode */
-body.mob .tbl-wrap{overflow-x:hidden;max-height:none;}
-body.mob table{display:none;}
-body.mob .trade-cards{display:flex;flex-direction:column;gap:8px;padding:10px;}
-body.mob .trade-card{
-  background:var(--table-row);border:1px solid var(--card-border);
-  border-radius:10px;padding:12px;transition:border-color 0.2s;
-}
-body.mob .trade-card.LOSS-card{border-left:3px solid var(--accent2);}
-body.mob .trade-card.WIN-card{border-left:3px solid var(--win);}
-body.mob .trade-card.PENDING-card{border-left:3px solid var(--accent3);}
-body.mob .tc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
-body.mob .tc-pair{display:flex;align-items:center;gap:8px;}
-body.mob .tc-flag{font-size:22px;}
-body.mob .tc-name{font-family:'Orbitron';font-size:13px;font-weight:700;color:var(--text);}
-body.mob .tc-mid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:8px;}
-body.mob .tc-item .tcl{font-size:8px;color:var(--muted);letter-spacing:1px;margin-bottom:2px;}
-body.mob .tc-item .tcv{font-family:'Share Tech Mono';font-size:11px;color:var(--text);}
-body.mob .tc-bot{display:flex;align-items:center;justify-content:space-between;}
-body.mob .tc-res-sel{background:transparent;border:none;font-family:'Orbitron';font-size:11px;cursor:pointer;padding:4px;}
-body.mob .tc-actions{display:flex;gap:6px;}
-
-/* Table visible on desktop mode even when mob exists */
-.trade-cards{display:none;}
-
-/* Auto responsive (even without button) */
-@media (max-width:768px) {
-  body:not(.desk) .wrap{padding:8px 8px 80px 8px;}
-  body:not(.desk) .main{display:block;}
-  body:not(.desk) .left-col,body:not(.desk) .right-col{display:block;}
-  body:not(.desk) .stats{grid-template-columns:repeat(2,1fr);gap:8px;}
-  body:not(.desk) .capital-hero{grid-template-columns:1fr 1fr;}
-  body:not(.desk) .cap-val{font-size:22px;}
-  body:not(.desk) .mob-nav{display:flex;}
-  body:not(.desk) .tab-pane{display:none;}
-  body:not(.desk) .tab-pane.active{display:block;}
-  body:not(.desk) .hdr{padding:10px 14px;}
-  body:not(.desk) .hdr .logo h1{font-size:13px;}
-  body:not(.desk) .hdr .logo p{display:none;}
-  body:not(.desk) table{display:none;}
-  body:not(.desk) .trade-cards{display:flex;flex-direction:column;gap:8px;padding:10px;}
-}
-
-/* ══════════════════════════════════════════════
-   ██████  RECOVERY MODAL  ██████
-══════════════════════════════════════════════ */
-.modal-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.75);
-  z-index:9000;display:none;align-items:flex-end;justify-content:center;
-  backdrop-filter:blur(4px);
-  animation:fadeIn 0.2s ease;
-}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
-.modal-overlay.open{display:flex;}
-
-/* Slide-up modal */
-.recovery-modal{
-  background:var(--bg2);border:1px solid rgba(255,62,108,0.3);
-  border-radius:20px 20px 0 0;width:100%;max-width:680px;
-  max-height:90vh;overflow-y:auto;
-  animation:slideUp 0.35s cubic-bezier(0.34,1.56,0.64,1);
-  padding:0 0 24px;
-}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-
-/* Desktop — centered modal */
-@media (min-width:769px) {
-  .modal-overlay{align-items:center;}
-  .recovery-modal{max-height:85vh;border-radius:20px;max-width:720px;}
-}
-
-.rec-header{
-  padding:20px 24px 16px;border-bottom:1px solid rgba(255,62,108,0.2);
-  background:linear-gradient(135deg,rgba(255,62,108,0.08),rgba(255,150,0,0.05));
-  position:sticky;top:0;z-index:10;
-}
-.rec-header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
-.rec-title{font-family:'Orbitron';font-size:16px;font-weight:900;color:var(--accent2);letter-spacing:2px;}
-.rec-close{background:transparent;border:1px solid rgba(255,62,108,0.3);border-radius:8px;padding:6px 12px;cursor:pointer;color:var(--text2);font-size:12px;transition:all 0.2s;}
-.rec-close:hover{background:rgba(255,62,108,0.15);color:var(--accent2);}
-
-.rec-body{padding:20px 24px;}
-
-/* Loss Summary Block */
-.loss-summary{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
-  margin-bottom:20px;
-}
-.ls-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:12px;padding:14px;text-align:center;}
-.ls-card .ls-val{font-family:'Orbitron';font-size:18px;font-weight:700;margin-bottom:4px;}
-.ls-card .ls-lbl{font-size:9px;color:var(--muted);letter-spacing:2px;}
-.ls-card.danger .ls-val{color:var(--accent2);}
-.ls-card.warn .ls-val{color:var(--accent3);}
-.ls-card.info .ls-val{color:var(--accent);}
-
-/* Recovery scenarios */
-.rec-section-title{font-family:'Orbitron';font-size:10px;letter-spacing:2px;color:var(--muted);margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid var(--card-border);}
-.scenarios{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
-.sc-card{
-  border-radius:12px;padding:14px;border:2px solid transparent;
-  cursor:pointer;transition:all 0.25s;text-align:center;
-  background:var(--card-bg);
-}
-.sc-card:hover{transform:translateY(-3px);}
-.sc-card.conservative{border-color:rgba(57,255,20,0.25);}
-.sc-card.conservative:hover,.sc-card.conservative.picked{border-color:var(--win);background:rgba(57,255,20,0.07);}
-.sc-card.balanced{border-color:rgba(255,215,0,0.25);}
-.sc-card.balanced:hover,.sc-card.balanced.picked{border-color:var(--accent3);background:rgba(255,215,0,0.07);}
-.sc-card.aggressive{border-color:rgba(255,62,108,0.25);}
-.sc-card.aggressive:hover,.sc-card.aggressive.picked{border-color:var(--accent2);background:rgba(255,62,108,0.07);}
-.sc-name{font-family:'Orbitron';font-size:10px;font-weight:700;letter-spacing:2px;margin-bottom:6px;}
-.sc-card.conservative .sc-name{color:var(--win);}
-.sc-card.balanced .sc-name{color:var(--accent3);}
-.sc-card.aggressive .sc-name{color:var(--accent2);}
-.sc-alloc{font-family:'Orbitron';font-size:22px;font-weight:900;margin-bottom:2px;}
-.sc-card.conservative .sc-alloc{color:var(--win);}
-.sc-card.balanced .sc-alloc{color:var(--accent3);}
-.sc-card.aggressive .sc-alloc{color:var(--accent2);}
-.sc-alloc-lbl{font-size:9px;color:var(--muted);margin-bottom:10px;}
-.sc-metric{font-size:10px;color:var(--text2);margin:3px 0;}
-.sc-metric span{font-family:'Share Tech Mono';font-weight:700;}
-.sc-trades-big{font-family:'Orbitron';font-size:28px;font-weight:900;color:var(--accent);margin:8px 0 2px;}
-.sc-trades-lbl{font-size:9px;color:var(--muted);}
-
-/* Recovery Path Steps */
-.rec-path{margin-bottom:20px;}
-.path-steps{display:flex;gap:6px;flex-wrap:wrap;margin-top:10px;}
-.path-step{
-  width:36px;height:36px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-family:'Orbitron';font-size:9px;font-weight:700;
-  border:2px solid var(--card-border);color:var(--muted);
-  transition:all 0.3s;position:relative;
-}
-.path-step.recovered{border-color:var(--win);background:rgba(57,255,20,0.15);color:var(--win);}
-.path-step.milestone{border-color:var(--accent3);background:rgba(255,215,0,0.1);color:var(--accent3);}
-.path-step:hover .step-tooltip{display:block;}
-.step-tooltip{display:none;position:absolute;bottom:42px;left:50%;transform:translateX(-50%);
-  background:var(--bg3);border:1px solid var(--card-border);border-radius:6px;
-  padding:5px 8px;font-size:9px;color:var(--text);white-space:nowrap;z-index:10;}
-
-/* Psych section */
-.psych-rules{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;}
-.pr-item{background:var(--card-bg);border:1px solid var(--card-border);border-radius:10px;padding:12px;display:flex;gap:10px;align-items:flex-start;}
-.pr-icon{font-size:20px;flex-shrink:0;}
-.pr-text strong{font-size:11px;color:var(--text);display:block;margin-bottom:3px;}
-.pr-text span{font-size:9px;color:var(--muted);line-height:1.5;}
-
-/* Recovery action buttons */
-.rec-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
-.rec-action-btn{padding:14px;border-radius:10px;cursor:pointer;font-family:'Orbitron';font-size:11px;font-weight:700;letter-spacing:1px;transition:all 0.2s;border:1px solid;}
-.rec-action-btn.apply{background:rgba(0,245,255,0.1);border-color:var(--accent);color:var(--accent);}
-.rec-action-btn.apply:hover{background:rgba(0,245,255,0.2);box-shadow:0 0 20px rgba(0,245,255,0.2);}
-.rec-action-btn.dismiss{background:transparent;border-color:var(--card-border);color:var(--text2);}
-.rec-action-btn.dismiss:hover{border-color:var(--muted);color:var(--text);}
-
-/* Expected value bar */
-.ev-bar-wrap{margin-bottom:20px;}
-.ev-bar-container{height:10px;background:rgba(255,255,255,0.07);border-radius:6px;overflow:hidden;margin-top:6px;position:relative;}
-.ev-bar-fill{height:100%;border-radius:6px;background:linear-gradient(90deg,var(--accent2),var(--accent3),var(--win));transition:width 0.6s ease;}
-.ev-labels{display:flex;justify-content:space-between;margin-top:4px;font-size:9px;color:var(--muted);font-family:'Share Tech Mono';}
-
-/* Break even counter */
-.bep-display{
-  background:linear-gradient(135deg,rgba(0,245,255,0.06),rgba(255,215,0,0.04));
-  border:1px solid var(--card-border);border-radius:12px;padding:14px;
-  display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;
-}
-.bep-left .bep-val{font-family:'Orbitron';font-size:24px;font-weight:900;color:var(--accent);}
-.bep-left .bep-lbl{font-size:10px;color:var(--muted);}
-.bep-right{text-align:right;}
-.bep-right .bep-sub{font-size:10px;color:var(--text2);}
-.bep-right .bep-detail{font-size:9px;color:var(--muted);margin-top:2px;}
-
-/* ══ MOBILE SPECIFIC RECOVERY ══ */
-@media (max-width:600px) {
-  .loss-summary{grid-template-columns:1fr 1fr;}
-  .loss-summary .ls-card:last-child{grid-column:1/-1;}
-  .scenarios{grid-template-columns:1fr;}
-  .psych-rules{grid-template-columns:1fr;}
-  .rec-actions{grid-template-columns:1fr;}
-  .rec-body{padding:14px 16px;}
-  .rec-header{padding:16px 16px 12px;}
-}
-
-/* ══ RECOVERY TRIGGER BADGE ══ */
-.recovery-badge{
-  display:inline-flex;align-items:center;gap:4px;
-  background:rgba(255,62,108,0.08);border:1px solid rgba(255,62,108,0.3);
-  border-radius:6px;padding:3px 8px;cursor:pointer;
-  font-family:'Orbitron';font-size:8px;color:var(--accent2);
-  transition:all 0.2s;letter-spacing:1px;
-}
-.recovery-badge:hover{background:rgba(255,62,108,0.2);box-shadow:0 0 8px rgba(255,62,108,0.3);}
-
-/* EV Gauge (semi-circle) in recovery */
-.ev-gauge-wrap{text-align:center;margin:10px 0;}
-.ev-gauge-wrap svg{overflow:visible;}
 
 .section-gap{margin-bottom:16px;}
 </style>
@@ -586,8 +372,7 @@ body.mob .tc-actions{display:flex;gap:6px;}
   <div class="hdr-right">
     <div class="live-pill"><div class="live-dot"></div>LIVE</div>
     <div id="clk">--:--:-- UTC</div>
-    <button class="hdr-btn" id="mobToggleBtn" onclick="toggleMobile()" title="Toggle Mobile UI">📱 MOBILE</button>
-    <button class="hdr-btn" onclick="toggleMode()" id="modeBtn">🌙</button>
+    <button class="mode-btn" onclick="toggleMode()" id="modeBtn" title="Toggle theme">🌙</button>
   </div>
 </header>
 
@@ -611,7 +396,7 @@ body.mob .tc-actions{display:flex;gap:6px;}
       <span class="ms-pill" data-target="1000">$1K 💎</span>
       <span class="ms-pill" data-target="5000">$5K 🔥</span>
       <span class="ms-pill" data-target="10000">$10K 👑</span>
-      <span class="ms-pill" data-target="50000">$50K 🏎️</span>
+      <span class="ms-pill" data-target="50000">$50K 🏎️ Ferrari</span>
     </div>
   </div>
   <div style="text-align:right;">
@@ -638,384 +423,181 @@ body.mob .tc-actions{display:flex;gap:6px;}
   <!-- LEFT COL -->
   <div class="left-col">
 
-    <!-- TAB 0: DASHBOARD -->
-    <div class="tab-pane active" data-tab="0">
-      <div class="panel">
-        <div class="ph">
-          <span>📊</span>
-          <h2>EQUITY CURVE — $100 GROWTH TRACKER</h2>
-          <div class="ph-right">
-            <span style="font-size:9px;color:var(--muted);font-family:'Share Tech Mono'" id="eq-label">Starting: $100</span>
-          </div>
+    <!-- EQUITY + CHART -->
+    <div class="panel">
+      <div class="ph">
+        <span>📊</span>
+        <h2>EQUITY CURVE — $100 GROWTH TRACKER</h2>
+        <div class="ph-right">
+          <span style="font-size:9px;color:var(--muted);font-family:'Share Tech Mono'" id="eq-label">Starting: $100</span>
         </div>
-        <div class="chart-wrap"><canvas id="eqChart" height="160"></canvas></div>
       </div>
+      <div class="chart-wrap"><canvas id="eqChart" height="160"></canvas></div>
+    </div>
 
-      <!-- PAIR PERFORMANCE -->
-      <div class="panel">
-        <div class="ph"><span>🌍</span><h2>PAIR PERFORMANCE BREAKDOWN</h2></div>
-        <div class="pp-wrap" id="pair-perf">
-          <div class="empty"><div class="ei">🌐</div>Log trades to see pair breakdown</div>
+    <!-- GMAIL SIGNAL FETCHER -->
+    <div class="panel">
+      <div class="ph">
+        <span>📬</span>
+        <h2>GMAIL SIGNAL FETCHER</h2>
+        <div class="ph-right">
+          <span style="font-size:9px;color:var(--muted);font-family:'Share Tech Mono'">Click signal to auto-fill form →</span>
         </div>
+      </div>
+      <div class="gmail-body">
+        <button class="fetch-btn" id="fetchBtn" onclick="fetchSignals()">
+          <span id="fetchIcon">📬</span>
+          <span id="fetchTxt">FETCH LATEST MONSTER FX SIGNALS FROM GMAIL</span>
+        </button>
+        <div id="fetch-status" class="fetch-status"></div>
+        <div id="signal-cards" class="signal-cards"></div>
       </div>
     </div>
 
-    <!-- TAB 1: SIGNALS -->
-    <div class="tab-pane" data-tab="1">
-      <div class="panel">
-        <div class="ph">
-          <span>📬</span>
-          <h2>GMAIL SIGNAL FETCHER</h2>
-          <div class="ph-right">
-            <span style="font-size:9px;color:var(--muted);font-family:'Share Tech Mono'">Click signal to auto-fill →</span>
-          </div>
+    <!-- TRADE JOURNAL TABLE -->
+    <div class="panel">
+      <div class="ph">
+        <span>📋</span>
+        <h2>TRADE JOURNAL</h2>
+        <div class="ph-right">
+          <span style="font-size:10px;color:var(--muted);font-family:'Share Tech Mono'" id="tcount">0 trades</span>
         </div>
-        <div class="gmail-body">
-          <button class="fetch-btn" id="fetchBtn" onclick="fetchSignals()">
-            <span id="fetchIcon">📬</span>
-            <span id="fetchTxt">FETCH LATEST MONSTER FX SIGNALS FROM GMAIL</span>
-          </button>
-          <div id="fetch-status" class="fetch-status"></div>
-          <div id="signal-cards" class="signal-cards"></div>
-        </div>
+      </div>
+      <div class="tbl-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th><th>PAIR</th><th>DIR</th><th>ENTRY</th><th>TP</th>
+              <th>SL</th><th>LEV</th><th>CONF</th><th>RESULT</th>
+              <th>P&amp;L%</th><th>CAPITAL</th><th>SETUP</th><th>TIME</th><th>🗑</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
       </div>
     </div>
 
-    <!-- TAB 2: JOURNAL -->
-    <div class="tab-pane" data-tab="2">
-      <div class="panel">
-        <div class="ph">
-          <span>📋</span>
-          <h2>TRADE JOURNAL</h2>
-          <div class="ph-right">
-            <span style="font-size:10px;color:var(--muted);font-family:'Share Tech Mono'" id="tcount">0 trades</span>
-          </div>
-        </div>
-        <!-- Desktop table -->
-        <div class="tbl-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>#</th><th>PAIR</th><th>DIR</th><th>ENTRY</th><th>TP</th>
-                <th>SL</th><th>LEV</th><th>CONF</th><th>RESULT</th>
-                <th>P&amp;L%</th><th>CAPITAL</th><th>SETUP</th><th>TIME</th><th>RECOVER</th><th>🗑</th>
-              </tr>
-            </thead>
-            <tbody id="tbody"></tbody>
-          </table>
-        </div>
-        <!-- Mobile cards -->
-        <div class="trade-cards" id="tradeCards"></div>
+    <!-- PAIR PERFORMANCE -->
+    <div class="panel">
+      <div class="ph"><span>🌍</span><h2>PAIR PERFORMANCE BREAKDOWN</h2></div>
+      <div class="pp-wrap" id="pair-perf">
+        <div class="empty"><div class="ei">🌐</div>Log trades to see pair breakdown</div>
       </div>
     </div>
 
-    <!-- TAB 4: TOOLS (export + rules) — mobile only tab -->
-    <div class="tab-pane" data-tab="4">
-      <div class="panel">
-        <div class="ph"><span>📤</span><h2>EXPORT &amp; ANALYSIS</h2></div>
-        <div class="exp-body">
-          <button class="exp-btn csv" onclick="exportCSV()">📄 Export CSV<br><span style="font-size:9px;font-weight:400">Trade journal</span></button>
-          <button class="exp-btn json" onclick="exportJSON()">📦 Export JSON<br><span style="font-size:9px;font-weight:400">Full raw data</span></button>
-          <button class="exp-btn model" onclick="exportModelCSV()">🧠 Model CSV<br><span style="font-size:9px;font-weight:400">Retrain engine</span></button>
-          <button class="exp-btn clear" onclick="clearAll()">🗑 Clear All<br><span style="font-size:9px;font-weight:400">Reset journal</span></button>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="ph"><span>🧠</span><h2>SURVIVAL RULES</h2></div>
-        <div class="rules-body">
-          <div class="rule-item g"><div class="ri">✅</div><div class="rt"><strong>TAKE THE TRADE</strong><span>SAFE=YES + Confidence ≥55% + NEUTRAL/WITH_TREND flow</span></div></div>
-          <div class="rule-item y"><div class="ri">⚠️</div><div class="rt"><strong>SWEEP BOUNCE — 40% LEV</strong><span>BUY_SIDE_SWEEP when taking BUY. Reduce leverage to 40%.</span></div></div>
-          <div class="rule-item r"><div class="ri">🚫</div><div class="rt"><strong>SKIP — NO SWEEP CONFIRM</strong><span>EARLY_EXHAUSTION + NONE sweep = no edge. Skip entirely.</span></div></div>
-          <div class="rule-item r"><div class="ri">💀</div><div class="rt"><strong>NEVER FIGHT THE FLOW</strong><span>STRONG_DOWN+BUY or STRONG_UP+SELL = liquidation guaranteed.</span></div></div>
-          <div class="rule-item g"><div class="ri">🎯</div><div class="rt"><strong>RR=1.0 IS YOUR EDGE</strong><span>57% WR × 1:1 RR = +490% net on 100 trades. Stay disciplined.</span></div></div>
-          <div class="rule-item y"><div class="ri">💰</div><div class="rt"><strong>$100 SURVIVAL RULE</strong><span>Never allocate more than 15% per trade. Survive first, grow second.</span></div></div>
-        </div>
-      </div>
-    </div>
-
-  </div><!-- left-col -->
+  </div>
 
   <!-- RIGHT COL -->
   <div class="right-col">
 
-    <!-- TAB 3: LOG TRADE -->
-    <div class="tab-pane active" data-tab="3">
-      <div class="panel">
-        <div class="ph"><span>➕</span><h2>LOG TRADE</h2></div>
-        <div class="form-body">
-          <div class="fr">
-            <div class="fg">
-              <label>Pair</label>
-              <select id="f-pair" onchange="updateVerdict()">
-                <option value="AUD/JPY">🇦🇺🇯🇵 AUD/JPY</option>
-                <option value="AUD/USD">🇦🇺🇺🇸 AUD/USD</option>
-                <option value="USD/JPY">🇺🇸🇯🇵 USD/JPY</option>
-                <option value="GBP/AUD">🇬🇧🇦🇺 GBP/AUD</option>
-                <option value="EUR/GBP">🇪🇺🇬🇧 EUR/GBP</option>
-                <option value="EUR/CHF">🇪🇺🇨🇭 EUR/CHF</option>
-                <option value="USD/CAD">🇺🇸🇨🇦 USD/CAD</option>
-              </select>
-            </div>
-            <div class="fg">
-              <label>Leverage</label>
-              <input type="number" id="f-lev" value="250" onchange="updateVerdict();calcRisk()">
-            </div>
+    <!-- FORM -->
+    <div class="panel">
+      <div class="ph"><span>➕</span><h2>LOG TRADE</h2></div>
+      <div class="form-body">
+
+        <div class="fr">
+          <div class="fg">
+            <label>Pair</label>
+            <select id="f-pair" onchange="updateVerdict()">
+              <option value="AUD/JPY">🇦🇺🇯🇵 AUD/JPY</option>
+              <option value="AUD/USD">🇦🇺🇺🇸 AUD/USD</option>
+              <option value="USD/JPY">🇺🇸🇯🇵 USD/JPY</option>
+              <option value="GBP/AUD">🇬🇧🇦🇺 GBP/AUD</option>
+              <option value="EUR/GBP">🇪🇺🇬🇧 EUR/GBP</option>
+              <option value="EUR/CHF">🇪🇺🇨🇭 EUR/CHF</option>
+              <option value="USD/CAD">🇺🇸🇨🇦 USD/CAD</option>
+            </select>
           </div>
-          <div class="dir-row">
-            <button class="db buy" onclick="setDir('BUY',this)">📈 BUY</button>
-            <button class="db sell" onclick="setDir('SELL',this)">📉 SELL</button>
+          <div class="fg">
+            <label>Leverage</label>
+            <input type="number" id="f-lev" value="250" onchange="updateVerdict();calcRisk()">
           </div>
-          <div class="fr">
-            <div class="fg"><label>Entry Price</label><input type="number" id="f-entry" placeholder="0.00000" step="0.00001" oninput="calcRisk()"></div>
-            <div class="fg"><label>Confidence %</label><input type="number" id="f-conf" placeholder="57" min="0" max="100" onchange="updateVerdict()"></div>
-          </div>
-          <div class="fr">
-            <div class="fg"><label>Take Profit</label><input type="number" id="f-tp" placeholder="0.00000" step="0.00001" oninput="calcRisk()"></div>
-            <div class="fg"><label>Stop Loss</label><input type="number" id="f-sl" placeholder="0.00000" step="0.00001" oninput="calcRisk()"></div>
-          </div>
-          <div class="fr">
-            <div class="fg"><label>Allocation % of Capital</label><input type="number" id="f-alloc" value="10" min="1" max="100" oninput="calcRisk()"></div>
-            <div class="fg">
-              <label>Setup Type</label>
-              <select id="f-setup">
-                <option>YES | NEUTRAL_SETUP</option>
-                <option>YES | WITH_TREND</option>
-                <option>YES | SWEEP_CONFIRMED</option>
-                <option>YES | SWEEP_BOUNCE — LOW LEV</option>
-                <option>NO — MANUAL TRADE</option>
-              </select>
-            </div>
-          </div>
-          <div class="risk-box">
-            <div class="risk-title">⚙️ RISK CALCULATOR</div>
-            <div class="risk-grid">
-              <div class="rg-item"><div class="rv" id="r-alloc" style="color:var(--accent)">$10.00</div><div class="rl">Allocated</div></div>
-              <div class="rg-item"><div class="rv" id="r-profit" style="color:var(--win)">$0.00</div><div class="rl">If TP hit</div></div>
-              <div class="rg-item"><div class="rv" id="r-loss" style="color:var(--accent2)">$0.00</div><div class="rl">If SL hit</div></div>
-            </div>
-          </div>
-          <div class="fg" style="margin-bottom:10px;">
-            <label>Result</label>
-            <div class="res-row">
-              <button class="rb win" onclick="setRes('WIN',this)">✅ WIN</button>
-              <button class="rb loss" onclick="setRes('LOSS',this)">❌ LOSS</button>
-              <button class="rb pend active" onclick="setRes('PENDING',this)">⏳ PENDING</button>
-            </div>
-          </div>
-          <div class="vbox" id="vbox">
-            <div class="vt" id="vt"></div>
-            <div class="vd" id="vd"></div>
-          </div>
-          <button class="sub-btn" onclick="addTrade()">⚡ LOG THIS TRADE</button>
         </div>
-      </div>
 
-      <!-- EXPORT — desktop only right col -->
-      <div class="panel" id="desktop-export">
-        <div class="ph"><span>📤</span><h2>EXPORT &amp; ANALYSIS</h2></div>
-        <div class="exp-body">
-          <button class="exp-btn csv" onclick="exportCSV()">📄 Export CSV<br><span style="font-size:9px;font-weight:400">Trade journal</span></button>
-          <button class="exp-btn json" onclick="exportJSON()">📦 Export JSON<br><span style="font-size:9px;font-weight:400">Full raw data</span></button>
-          <button class="exp-btn model" onclick="exportModelCSV()">🧠 Model CSV<br><span style="font-size:9px;font-weight:400">Retrain engine</span></button>
-          <button class="exp-btn clear" onclick="clearAll()">🗑 Clear All<br><span style="font-size:9px;font-weight:400">Reset journal</span></button>
+        <div class="dir-row">
+          <button class="db buy" onclick="setDir('BUY',this)">📈 BUY</button>
+          <button class="db sell" onclick="setDir('SELL',this)">📉 SELL</button>
         </div>
-      </div>
 
-      <!-- SURVIVAL RULES — desktop only -->
-      <div class="panel" id="desktop-rules">
-        <div class="ph"><span>🧠</span><h2>SURVIVAL RULES</h2></div>
-        <div class="rules-body">
-          <div class="rule-item g"><div class="ri">✅</div><div class="rt"><strong>TAKE THE TRADE</strong><span>SAFE=YES + Confidence ≥55% + NEUTRAL/WITH_TREND flow</span></div></div>
-          <div class="rule-item y"><div class="ri">⚠️</div><div class="rt"><strong>SWEEP BOUNCE — 40% LEV</strong><span>BUY_SIDE_SWEEP when taking BUY. Reduce leverage to 40%.</span></div></div>
-          <div class="rule-item r"><div class="ri">🚫</div><div class="rt"><strong>SKIP — NO SWEEP CONFIRM</strong><span>EARLY_EXHAUSTION + NONE sweep = no edge. Skip entirely.</span></div></div>
-          <div class="rule-item r"><div class="ri">💀</div><div class="rt"><strong>NEVER FIGHT THE FLOW</strong><span>STRONG_DOWN+BUY or STRONG_UP+SELL = liquidation guaranteed.</span></div></div>
-          <div class="rule-item g"><div class="ri">🎯</div><div class="rt"><strong>RR=1.0 IS YOUR EDGE</strong><span>57% WR × 1:1 RR = +490% net on 100 trades. Stay disciplined.</span></div></div>
-          <div class="rule-item y"><div class="ri">💰</div><div class="rt"><strong>$100 SURVIVAL RULE</strong><span>Never allocate more than 15% per trade. Survive first, grow second.</span></div></div>
+        <div class="fr">
+          <div class="fg"><label>Entry Price</label><input type="number" id="f-entry" placeholder="0.00000" step="0.00001" oninput="calcRisk()"></div>
+          <div class="fg"><label>Confidence %</label><input type="number" id="f-conf" placeholder="57" min="0" max="100" onchange="updateVerdict()"></div>
         </div>
+        <div class="fr">
+          <div class="fg"><label>Take Profit</label><input type="number" id="f-tp" placeholder="0.00000" step="0.00001" oninput="calcRisk()"></div>
+          <div class="fg"><label>Stop Loss</label><input type="number" id="f-sl" placeholder="0.00000" step="0.00001" oninput="calcRisk()"></div>
+        </div>
+
+        <div class="fr">
+          <div class="fg"><label>Allocation % of Capital</label><input type="number" id="f-alloc" value="10" min="1" max="100" oninput="calcRisk()"></div>
+          <div class="fg">
+            <label>Setup Type</label>
+            <select id="f-setup">
+              <option>YES | NEUTRAL_SETUP</option>
+              <option>YES | WITH_TREND</option>
+              <option>YES | SWEEP_CONFIRMED</option>
+              <option>YES | SWEEP_BOUNCE — LOW LEV</option>
+              <option>NO — MANUAL TRADE</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- RISK CALC -->
+        <div class="risk-box">
+          <div class="risk-title">⚙️ RISK CALCULATOR (based on your $100 capital)</div>
+          <div class="risk-grid">
+            <div class="rg-item"><div class="rv" id="r-alloc" style="color:var(--accent)">$10.00</div><div class="rl">Allocated</div></div>
+            <div class="rg-item"><div class="rv" id="r-profit" style="color:var(--win)">$0.00</div><div class="rl">If TP hit</div></div>
+            <div class="rg-item"><div class="rv" id="r-loss" style="color:var(--accent2)">$0.00</div><div class="rl">If SL hit</div></div>
+          </div>
+        </div>
+
+        <div class="fg" style="margin-bottom:10px;">
+          <label>Result</label>
+          <div class="res-row">
+            <button class="rb win" onclick="setRes('WIN',this)">✅ WIN</button>
+            <button class="rb loss" onclick="setRes('LOSS',this)">❌ LOSS</button>
+            <button class="rb pend active" onclick="setRes('PENDING',this)">⏳ PENDING</button>
+          </div>
+        </div>
+
+        <div class="vbox" id="vbox">
+          <div class="vt" id="vt"></div>
+          <div class="vd" id="vd"></div>
+        </div>
+
+        <button class="sub-btn" onclick="addTrade()">⚡ LOG THIS TRADE</button>
       </div>
-    </div><!-- tab-pane 3 -->
-
-  </div><!-- right-col -->
-
-</div><!-- main -->
-
-</div><!-- wrap -->
-
-<!-- ══ MOBILE BOTTOM NAV ══ -->
-<nav class="mob-nav" id="mobNav">
-  <button class="mob-nav-item active" onclick="switchTab(0,this)" data-tab="0">
-    <span class="mnicon">📊</span>CHARTS
-  </button>
-  <button class="mob-nav-item" onclick="switchTab(1,this)" data-tab="1">
-    <span class="mnicon">📬</span>SIGNALS
-  </button>
-  <button class="mob-nav-item" onclick="switchTab(2,this)" data-tab="2">
-    <span class="mnicon">📋</span>JOURNAL
-  </button>
-  <button class="mob-nav-item" onclick="switchTab(3,this)" data-tab="3">
-    <span class="mnicon">➕</span>LOG
-  </button>
-  <button class="mob-nav-item" onclick="switchTab(4,this)" data-tab="4">
-    <span class="mnicon">🔧</span>TOOLS
-  </button>
-</nav>
-
-<!-- ══════════════════════════════════════════════
-     RECOVERY MODAL
-══════════════════════════════════════════════ -->
-<div class="modal-overlay" id="recoveryModal" onclick="closeModalOutside(event)">
-  <div class="recovery-modal" id="recoveryModalInner">
-
-    <div class="rec-header">
-      <div class="rec-header-top">
-        <div class="rec-title">💀 LOSS RECOVERY PLANNER</div>
-        <button class="rec-close" onclick="closeRecovery()">✕ CLOSE</button>
-      </div>
-      <div style="font-size:10px;color:var(--muted);font-family:'Share Tech Mono'" id="rec-trade-label">—</div>
     </div>
 
-    <div class="rec-body">
-
-      <!-- Loss Summary -->
-      <div class="loss-summary">
-        <div class="ls-card danger">
-          <div class="ls-val" id="rec-loss-amt">-$0.00</div>
-          <div class="ls-lbl">LOSS AMOUNT</div>
-        </div>
-        <div class="ls-card warn">
-          <div class="ls-val" id="rec-cap-after">$100.00</div>
-          <div class="ls-lbl">CAPITAL NOW</div>
-        </div>
-        <div class="ls-card info">
-          <div class="ls-val" id="rec-drawdown">0.0%</div>
-          <div class="ls-lbl">DRAWDOWN</div>
-        </div>
+    <!-- EXPORT -->
+    <div class="panel">
+      <div class="ph"><span>📤</span><h2>EXPORT &amp; ANALYSIS</h2></div>
+      <div class="exp-body">
+        <button class="exp-btn csv" onclick="exportCSV()">📄 Export CSV<br><span style="font-size:9px;font-weight:400">Trade journal</span></button>
+        <button class="exp-btn json" onclick="exportJSON()">📦 Export JSON<br><span style="font-size:9px;font-weight:400">Full raw data</span></button>
+        <button class="exp-btn model" onclick="exportModelCSV()">🧠 Model Training CSV<br><span style="font-size:9px;font-weight:400">For retraining engine</span></button>
+        <button class="exp-btn clear" onclick="clearAll()">🗑 Clear All Data<br><span style="font-size:9px;font-weight:400">Reset journal</span></button>
       </div>
-
-      <!-- Break-even counter -->
-      <div class="bep-display">
-        <div class="bep-left">
-          <div class="bep-val" id="rec-bep-trades">—</div>
-          <div class="bep-lbl">TRADES TO BREAK EVEN</div>
-        </div>
-        <div class="bep-right">
-          <div class="bep-sub" id="rec-bep-sub">at 57% WR × 1:1 RR</div>
-          <div class="bep-detail" id="rec-bep-detail">Select a scenario below</div>
-        </div>
-      </div>
-
-      <!-- EV progress bar -->
-      <div class="ev-bar-wrap">
-        <div class="rec-section-title">📐 RECOVERY PROGRESS (EV-Based)</div>
-        <div class="ev-bar-container">
-          <div class="ev-bar-fill" id="rec-ev-bar" style="width:0%"></div>
-        </div>
-        <div class="ev-labels">
-          <span>0% recovered</span>
-          <span id="ev-mid-label">50%</span>
-          <span>100% break-even</span>
-        </div>
-      </div>
-
-      <!-- Recovery Scenarios -->
-      <div class="rec-section-title">🎯 CHOOSE RECOVERY SCENARIO</div>
-      <div class="scenarios" id="rec-scenarios">
-        <div class="sc-card conservative" onclick="pickScenario('conservative',this)">
-          <div class="sc-name">CONSERVATIVE</div>
-          <div class="sc-alloc" id="sc-alloc-c">5%</div>
-          <div class="sc-alloc-lbl">PER TRADE ALLOCATION</div>
-          <div class="sc-metric">WR needed: <span>55%</span></div>
-          <div class="sc-metric">RR: <span>1:1</span></div>
-          <div class="sc-metric">Risk: <span style="color:var(--win)">LOW</span></div>
-          <div class="sc-trades-big" id="sc-trades-c">—</div>
-          <div class="sc-trades-lbl">TRADES TO RECOVER</div>
-        </div>
-        <div class="sc-card balanced" onclick="pickScenario('balanced',this)">
-          <div class="sc-name">BALANCED</div>
-          <div class="sc-alloc" id="sc-alloc-b">10%</div>
-          <div class="sc-alloc-lbl">PER TRADE ALLOCATION</div>
-          <div class="sc-metric">WR needed: <span>57%</span></div>
-          <div class="sc-metric">RR: <span>1:1</span></div>
-          <div class="sc-metric">Risk: <span style="color:var(--accent3)">MED</span></div>
-          <div class="sc-trades-big" id="sc-trades-b">—</div>
-          <div class="sc-trades-lbl">TRADES TO RECOVER</div>
-        </div>
-        <div class="sc-card aggressive" onclick="pickScenario('aggressive',this)">
-          <div class="sc-name">AGGRESSIVE</div>
-          <div class="sc-alloc" id="sc-alloc-a">15%</div>
-          <div class="sc-alloc-lbl">PER TRADE ALLOCATION</div>
-          <div class="sc-metric">WR needed: <span>60%</span></div>
-          <div class="sc-metric">RR: <span>1:1</span></div>
-          <div class="sc-metric">Risk: <span style="color:var(--accent2)">HIGH</span></div>
-          <div class="sc-trades-big" id="sc-trades-a">—</div>
-          <div class="sc-trades-lbl">TRADES TO RECOVER</div>
-        </div>
-      </div>
-
-      <!-- Recovery Path Visualization -->
-      <div class="rec-path">
-        <div class="rec-section-title">🛣️ RECOVERY PATH — STEP BY STEP</div>
-        <div class="path-steps" id="rec-path-steps">
-          <div style="font-size:10px;color:var(--muted);font-family:'Share Tech Mono'">Select a scenario to see recovery path →</div>
-        </div>
-      </div>
-
-      <!-- Psychological Rules -->
-      <div class="rec-section-title">🧠 MENTAL RULES DURING RECOVERY</div>
-      <div class="psych-rules">
-        <div class="pr-item">
-          <div class="pr-icon">🚫</div>
-          <div class="pr-text">
-            <strong>NO REVENGE TRADING</strong>
-            <span>Never increase size to "win it back fast." Bigger size = bigger loss. Stick to your scenario alloc.</span>
-          </div>
-        </div>
-        <div class="pr-item">
-          <div class="pr-icon">⏸️</div>
-          <div class="pr-text">
-            <strong>TAKE A 30-MIN BREAK</strong>
-            <span>Cortisol spikes after a loss. Wait 30 minutes before next entry. Cold head = better decisions.</span>
-          </div>
-        </div>
-        <div class="pr-item">
-          <div class="pr-icon">📋</div>
-          <div class="pr-text">
-            <strong>ONLY SAFE=YES SIGNALS</strong>
-            <span>During recovery, only take the clearest Monster FX signals. Confidence ≥60% minimum. No maybes.</span>
-          </div>
-        </div>
-        <div class="pr-item">
-          <div class="pr-icon">💎</div>
-          <div class="pr-text">
-            <strong>ONE TRADE AT A TIME</strong>
-            <span>No stacking trades during recovery. Single focused execution. Protect remaining capital above all.</span>
-          </div>
-        </div>
-        <div class="pr-item">
-          <div class="pr-icon">📊</div>
-          <div class="pr-text">
-            <strong>57% WR IS ENOUGH</strong>
-            <span>You don't need to win every trade. 57 wins from 100 = massive growth. Trust the math, not the emotion.</span>
-          </div>
-        </div>
-        <div class="pr-item">
-          <div class="pr-icon">🏦</div>
-          <div class="pr-text">
-            <strong>CAPITAL PRESERVATION FIRST</strong>
-            <span>A loss of 50% needs 100% gain to recover. Never let a bad day become a catastrophic day.</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Actions -->
-      <div class="rec-actions">
-        <button class="rec-action-btn apply" id="recApplyBtn" onclick="applyRecoverySettings()">⚡ APPLY SETTINGS TO FORM</button>
-        <button class="rec-action-btn dismiss" onclick="closeRecovery()">↩ DISMISS — I'LL HANDLE IT</button>
-      </div>
-
     </div>
+
+    <!-- SURVIVAL RULES -->
+    <div class="panel">
+      <div class="ph"><span>🧠</span><h2>SURVIVAL RULES</h2></div>
+      <div class="rules-body">
+        <div class="rule-item g"><div class="ri">✅</div><div class="rt"><strong>TAKE THE TRADE</strong><span>SAFE=YES + Confidence ≥55% + NEUTRAL/WITH_TREND flow</span></div></div>
+        <div class="rule-item y"><div class="ri">⚠️</div><div class="rt"><strong>SWEEP BOUNCE — 40% LEV</strong><span>BUY_SIDE_SWEEP when taking BUY. Bounce possible but drop incoming. Reduce leverage to 40%.</span></div></div>
+        <div class="rule-item r"><div class="ri">🚫</div><div class="rt"><strong>SKIP — NO SWEEP CONFIRM</strong><span>EARLY_EXHAUSTION + NONE sweep = no edge. Skip entirely.</span></div></div>
+        <div class="rule-item r"><div class="ri">💀</div><div class="rt"><strong>NEVER FIGHT THE FLOW</strong><span>STRONG_DOWN+BUY or STRONG_UP+SELL = liquidation guaranteed.</span></div></div>
+        <div class="rule-item g"><div class="ri">🎯</div><div class="rt"><strong>RR=1.0 IS YOUR EDGE</strong><span>57% WR × 1:1 RR = +490% net on 100 trades. Stay disciplined.</span></div></div>
+        <div class="rule-item y"><div class="ri">💰</div><div class="rt"><strong>$100 SURVIVAL RULE</strong><span>Never allocate more than 15% per trade. Survive first, grow second.</span></div></div>
+      </div>
+    </div>
+
   </div>
 </div>
+
+</div><!-- wrap -->
 
 <div class="toast" id="toast"></div>
 
@@ -1027,10 +609,6 @@ const STARTING_CAPITAL = 100;
 let trades = JSON.parse(localStorage.getItem('mfx_trades') || '[]');
 let selDir = '', selRes = 'PENDING';
 let isDark = localStorage.getItem('mfx_theme') !== 'light';
-let isMobile = localStorage.getItem('mfx_mobile') === '1';
-let activeTab = 0;
-let pickedScenario = null;
-let currentRecoveryTrade = null;
 
 const FLAGS = {
   'AUD/JPY':'🇦🇺🇯🇵','AUD/USD':'🇦🇺🇺🇸','USD/JPY':'🇺🇸🇯🇵',
@@ -1046,87 +624,15 @@ function toggleMode() {
   localStorage.setItem('mfx_theme', isDark ? 'dark' : 'light');
 }
 function applyTheme() {
+  document.body.setAttribute('data-theme', isDark ? '' : 'light');
+  document.body.removeAttribute('data-theme');
   if (!isDark) document.body.setAttribute('data-theme','light');
-  else document.body.removeAttribute('data-theme');
   document.getElementById('modeBtn').textContent = isDark ? '🌙' : '☀️';
   setTimeout(renderEquity, 100);
 }
+// init theme
 if (!isDark) document.body.setAttribute('data-theme','light');
 document.getElementById('modeBtn').textContent = isDark ? '🌙' : '☀️';
-
-/* ════════════════════════════════════
-   MOBILE TOGGLE
-════════════════════════════════════ */
-function toggleMobile() {
-  isMobile = !isMobile;
-  applyMobileMode();
-  localStorage.setItem('mfx_mobile', isMobile ? '1' : '0');
-  setTimeout(renderEquity, 150);
-}
-function applyMobileMode() {
-  const btn = document.getElementById('mobToggleBtn');
-  if (isMobile) {
-    document.body.classList.add('mob');
-    document.body.classList.remove('desk');
-    btn.classList.add('mobile-active');
-    btn.innerHTML = '🖥️ DESKTOP';
-    // In mobile, make sure trade journal tab shows cards
-    renderTradeCards();
-    // Switch to dashboard tab in mobile
-    switchTab(activeTab, document.querySelector(`.mob-nav-item[data-tab="${activeTab}"]`));
-  } else {
-    document.body.classList.remove('mob');
-    document.body.classList.add('desk');
-    btn.classList.remove('mobile-active');
-    btn.innerHTML = '📱 MOBILE';
-    // Ensure all tab-panes visible in desktop
-    document.querySelectorAll('.tab-pane').forEach(p => {
-      p.style.display = '';
-    });
-  }
-}
-// Apply on load
-if (isMobile) {
-  document.body.classList.add('mob');
-} else {
-  document.body.classList.add('desk');
-}
-document.addEventListener('DOMContentLoaded', () => { applyMobileMode(); });
-
-/* ════════════════════════════════════
-   TAB NAVIGATION
-════════════════════════════════════ */
-function switchTab(tabIdx, el) {
-  activeTab = tabIdx;
-  // Update nav
-  document.querySelectorAll('.mob-nav-item').forEach(b => b.classList.remove('active'));
-  if (el) el.classList.add('active');
-
-  // In mobile mode, show/hide tab panes
-  if (document.body.classList.contains('mob') || window.innerWidth <= 768) {
-    // Left col tabs: 0,1,2,4 — Right col tab: 3
-    const leftTabs = [0,1,2,4];
-    const rightTabs = [3];
-
-    document.querySelectorAll('.left-col .tab-pane').forEach(p => {
-      const t = parseInt(p.getAttribute('data-tab'));
-      p.classList.toggle('active', leftTabs.includes(tabIdx) && t === tabIdx);
-    });
-    document.querySelectorAll('.right-col .tab-pane').forEach(p => {
-      const t = parseInt(p.getAttribute('data-tab'));
-      p.classList.toggle('active', rightTabs.includes(tabIdx) && t === tabIdx);
-    });
-
-    // Hide desktop-only panels in mobile
-    ['desktop-export','desktop-rules'].forEach(id => {
-      const el2 = document.getElementById(id);
-      if (el2) el2.style.display = 'none';
-    });
-  }
-
-  if (tabIdx === 0) setTimeout(renderEquity, 100);
-  if (tabIdx === 2) renderTradeCards();
-}
 
 /* ════════════════════════════════════
    CLOCK
@@ -1233,22 +739,16 @@ function addTrade() {
 
   const newCap = cap + (pnlAmt||0);
 
-  const tradeObj = {
+  trades.unshift({
     id:Date.now(), pair, dir:selDir, entry, tp, sl, lev, conf, setup,
     alloc:alloc*100, result:selRes, pnlPct, pnlAmt,
     capitalAfter: selRes!=='PENDING' ? newCap : null,
     time:new Date().toISOString()
-  };
+  });
 
-  trades.unshift(tradeObj);
   save(); render();
   showToast(`✅ ${FLAGS[pair]} ${pair} ${selDir} logged`,'ok');
   ['f-entry','f-tp','f-sl','f-conf'].forEach(id=>document.getElementById(id).value='');
-
-  // Auto-prompt recovery if it was a loss
-  if (selRes === 'LOSS') {
-    setTimeout(() => openRecovery(tradeObj), 600);
-  }
 }
 
 /* ════════════════════════════════════
@@ -1283,14 +783,13 @@ function updateRes(id, result) {
     t.capitalAfter = cap + (t.pnlAmt||0);
   }
   save(); render();
-  if (result === 'LOSS') setTimeout(() => openRecovery(t), 400);
 }
 
 /* ════════════════════════════════════
    RENDER
 ════════════════════════════════════ */
 function render() {
-  renderStats(); renderCapital(); renderTable(); renderTradeCards(); renderEquity(); renderPairPerf();
+  renderStats(); renderCapital(); renderTable(); renderEquity(); renderPairPerf();
 }
 
 function renderCapital() {
@@ -1301,7 +800,10 @@ function renderCapital() {
   document.getElementById('cap-growth').className = 'cap-growth '+(growth>=0?'pos':'neg');
   const closed = trades.filter(t=>t.result!=='PENDING');
   document.getElementById('cap-trades-sub').textContent = closed.length+' completed trades';
+
+  // Milestones
   const targets=[200,500,1000,5000,10000,50000];
+  const labels=['$200 🎯','$500 🚀','$1K 💎','$5K 🔥','$10K 👑','$50K 🏎️ Ferrari'];
   let nextTarget=targets.find(t=>cap<t)||null;
   document.querySelectorAll('.ms-pill').forEach((p,i)=>{
     const t=targets[i];
@@ -1317,7 +819,6 @@ function renderCapital() {
     document.getElementById('next-need').textContent='Ferrari acquired 🏎️';
   }
   document.getElementById('eq-label').textContent=`Current: $${cap.toFixed(2)}`;
-  calcRisk();
 }
 
 function renderStats() {
@@ -1330,6 +831,7 @@ function renderStats() {
   const avgConf=trades.length?Math.round(trades.reduce((s,t)=>s+(t.conf||0),0)/trades.length):0;
   const sorted=closed.filter(t=>t.pnlPct!==null).sort((a,b)=>b.pnlPct-a.pnlPct);
   const best=sorted[0], worst=sorted[sorted.length-1];
+
   document.getElementById('s-total').textContent=trades.length;
   document.getElementById('s-wr').textContent=wr+'%';
   document.getElementById('s-wl').textContent=wins.length+'W / '+losses.length+'L';
@@ -1344,13 +846,10 @@ function renderStats() {
   document.getElementById('tcount').textContent=trades.length+' trades';
 }
 
-/* ════════════════════════════════════
-   DESKTOP TABLE
-════════════════════════════════════ */
 function renderTable() {
   const tb=document.getElementById('tbody');
   if (!trades.length) {
-    tb.innerHTML='<tr><td colspan="15"><div class="empty"><div class="ei">🎯</div>No trades yet. Add your first trade →</div></td></tr>';
+    tb.innerHTML='<tr><td colspan="14"><div class="empty"><div class="ei">🎯</div>No trades yet. Add your first trade →</div></td></tr>';
     return;
   }
   tb.innerHTML=trades.map((t,i)=>{
@@ -1359,9 +858,6 @@ function renderTable() {
       :`<span class="pp zero">OPEN</span>`;
     const capStr=t.capitalAfter?`<span style="font-family:'Share Tech Mono';font-size:10px;color:var(--accent3)">$${t.capitalAfter.toFixed(2)}</span>`:'—';
     const ts=new Date(t.time);
-    const recoverBtn = t.result==='LOSS'
-      ? `<button class="recovery-badge" onclick="openRecovery(trades.find(x=>x.id==${t.id}))">🔴 RECOVER</button>`
-      : '—';
     return `<tr>
       <td style="color:var(--muted);font-family:'Share Tech Mono'">${trades.length-i}</td>
       <td><div class="pc"><span class="pf">${FLAGS[t.pair]||'🌐'}</span><span class="pn">${t.pair}</span></div></td>
@@ -1381,75 +877,13 @@ function renderTable() {
         </select></td>
       <td>${pnlStr}</td>
       <td>${capStr}</td>
-      <td style="font-size:9px;color:var(--muted);max-width:90px;overflow:hidden;text-overflow:ellipsis">${t.setup||'—'}</td>
+      <td style="font-size:9px;color:var(--muted);max-width:100px;overflow:hidden;text-overflow:ellipsis">${t.setup||'—'}</td>
       <td style="font-size:9px;color:var(--muted);font-family:'Share Tech Mono'">${ts.toLocaleDateString('en-GB',{month:'short',day:'numeric'})}<br>${ts.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</td>
-      <td>${recoverBtn}</td>
       <td><button class="del2" onclick="del(${t.id})">✕</button></td>
     </tr>`;
   }).join('');
 }
 
-/* ════════════════════════════════════
-   MOBILE TRADE CARDS
-════════════════════════════════════ */
-function renderTradeCards() {
-  const container = document.getElementById('tradeCards');
-  if (!container) return;
-  if (!trades.length) {
-    container.innerHTML='<div class="empty"><div class="ei">🎯</div>No trades yet</div>';
-    return;
-  }
-  container.innerHTML = trades.map((t,i) => {
-    const ts = new Date(t.time);
-    const pnlColor = t.pnlPct > 0 ? 'var(--win)' : t.pnlPct < 0 ? 'var(--accent2)' : 'var(--accent3)';
-    const pnlStr = t.pnlPct !== null && t.pnlPct !== undefined
-      ? `<span style="font-family:'Orbitron';font-size:14px;font-weight:700;color:${pnlColor}">${t.pnlPct>=0?'+':''}${t.pnlPct}%</span>`
-      : `<span style="color:var(--accent3);font-family:'Orbitron';font-size:11px">OPEN</span>`;
-    return `
-    <div class="trade-card ${t.result}-card">
-      <div class="tc-top">
-        <div class="tc-pair">
-          <span class="tc-flag">${FLAGS[t.pair]||'🌐'}</span>
-          <div>
-            <div class="tc-name">${t.pair}</div>
-            <span style="font-size:9px;color:var(--muted);font-family:'Share Tech Mono'">#${trades.length-i} · ${ts.toLocaleDateString('en-GB',{month:'short',day:'numeric'})}</span>
-          </div>
-        </div>
-        <div style="text-align:right">
-          <span class="db2 ${t.dir}">${t.dir==='BUY'?'📈':'📉'} ${t.dir}</span><br>
-          <span style="font-family:'Orbitron';font-size:9px;color:${t.result==='WIN'?'var(--win)':t.result==='LOSS'?'var(--accent2)':'var(--accent3)'}">${t.result}</span>
-        </div>
-      </div>
-      <div class="tc-mid">
-        <div class="tc-item"><div class="tcl">ENTRY</div><div class="tcv">${t.entry}</div></div>
-        <div class="tc-item"><div class="tcl">LEVERAGE</div><div class="tcv">${t.lev}x</div></div>
-        <div class="tc-item"><div class="tcl">P&L</div><div class="tcv">${pnlStr}</div></div>
-      </div>
-      <div class="tc-mid" style="grid-template-columns:1fr 1fr;margin-top:4px;">
-        <div class="tc-item"><div class="tcl">TAKE PROFIT</div><div class="tcv" style="color:var(--win)">${t.tp||'—'}</div></div>
-        <div class="tc-item"><div class="tcl">STOP LOSS</div><div class="tcv" style="color:var(--accent2)">${t.sl||'—'}</div></div>
-      </div>
-      <div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--card-border);display:flex;align-items:center;justify-content:space-between;">
-        <select onchange="updateRes(${t.id},this.value)"
-          style="background:var(--input-bg);border:1px solid var(--card-border);border-radius:6px;
-          font-family:'Orbitron';font-size:11px;padding:6px 8px;cursor:pointer;color:var(--text)">
-          <option value="WIN" ${t.result==='WIN'?'selected':''}>✅ WIN</option>
-          <option value="LOSS" ${t.result==='LOSS'?'selected':''}>❌ LOSS</option>
-          <option value="PENDING" ${t.result==='PENDING'?'selected':''}>⏳ PENDING</option>
-        </select>
-        <div style="display:flex;gap:6px;align-items:center">
-          ${t.result==='LOSS' ? `<button class="recovery-badge" onclick="openRecovery(trades.find(x=>x.id==${t.id}))">🔴 RECOVER</button>` : ''}
-          <button class="del2" onclick="del(${t.id})">✕</button>
-        </div>
-      </div>
-      ${t.capitalAfter ? `<div style="margin-top:6px;font-size:10px;color:var(--muted)">Capital after: <span style="color:var(--accent3);font-family:'Orbitron'">${'$'+t.capitalAfter.toFixed(2)}</span></div>` : ''}
-    </div>`;
-  }).join('');
-}
-
-/* ════════════════════════════════════
-   EQUITY CURVE
-════════════════════════════════════ */
 function renderEquity() {
   const canvas=document.getElementById('eqChart');
   const ctx=canvas.getContext('2d');
@@ -1458,30 +892,40 @@ function renderEquity() {
   canvas.height=H*(window.devicePixelRatio||1);
   ctx.scale(window.devicePixelRatio||1, window.devicePixelRatio||1);
   ctx.clearRect(0,0,W,H);
+
   const closed=[...trades].reverse().filter(t=>t.result!=='PENDING'&&t.pnlAmt!==null);
   if (closed.length<2) {
     const txt=isDark?'rgba(0,245,255,0.25)':'rgba(0,102,204,0.4)';
     ctx.fillStyle=txt; ctx.font="11px 'Share Tech Mono'";
     ctx.fillText('Log 2+ completed trades to see equity curve',20,H/2); return;
   }
+
   let run=STARTING_CAPITAL;
   const pts=[STARTING_CAPITAL,...closed.map(t=>{run+=t.pnlAmt;return run;})];
   const mn=Math.min(...pts), mx=Math.max(...pts), range=mx-mn||1;
   const pad=28;
+
+  // Grid
   const gc=isDark?'rgba(0,245,255,0.05)':'rgba(0,102,204,0.08)';
   ctx.strokeStyle=gc; ctx.lineWidth=1;
   for(let i=0;i<=4;i++){const y=pad+(H-pad*2)*i/4;ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+
+  // Zero=STARTING line
   const baseY=pad+(H-pad*2)*(1-(STARTING_CAPITAL-mn)/range);
   ctx.strokeStyle=isDark?'rgba(255,255,255,0.12)':'rgba(0,0,0,0.15)';
   ctx.setLineDash([4,4]);
   ctx.beginPath();ctx.moveTo(0,baseY);ctx.lineTo(W,baseY);ctx.stroke();
   ctx.setLineDash([]);
+
   const coords=pts.map((v,i)=>({
     x:i*(W/(pts.length-1)),
     y:pad+(H-pad*2)*(1-(v-mn)/range)
   }));
+
   const isProfit=pts[pts.length-1]>=STARTING_CAPITAL;
   const lineC=isProfit?(isDark?'#00f5ff':'#0066cc'):(isDark?'#ff3e6c':'#cc2244');
+
+  // Fill gradient
   const grad=ctx.createLinearGradient(0,pad,0,H-pad);
   grad.addColorStop(0,isProfit?'rgba(0,245,255,0.18)':'rgba(255,62,108,0.15)');
   grad.addColorStop(1,'rgba(0,0,0,0)');
@@ -1491,13 +935,19 @@ function renderEquity() {
   coords.forEach(p=>ctx.lineTo(p.x,p.y));
   ctx.lineTo(coords[coords.length-1].x,H-pad);
   ctx.closePath(); ctx.fill();
+
+  // Line
   ctx.strokeStyle=lineC; ctx.lineWidth=2.5; ctx.lineJoin='round';
   ctx.beginPath(); coords.forEach((p,i)=>i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y)); ctx.stroke();
+
+  // Dots
   coords.forEach((p,i)=>{
     if(i===0||i===coords.length-1){
       ctx.fillStyle=lineC; ctx.beginPath(); ctx.arc(p.x,p.y,4,0,Math.PI*2); ctx.fill();
     }
   });
+
+  // Labels
   const lc=isDark?'rgba(0,245,255,0.5)':'rgba(0,102,204,0.6)';
   ctx.fillStyle=lc; ctx.font="9px 'Share Tech Mono'";
   ctx.fillText('$'+mx.toFixed(0),4,pad+4);
@@ -1534,250 +984,134 @@ function renderPairPerf() {
    GMAIL SIGNAL FETCHER
 ════════════════════════════════════ */
 async function fetchSignals() {
-  const btn=document.getElementById('fetchBtn');
-  const icon=document.getElementById('fetchIcon');
-  const txt=document.getElementById('fetchTxt');
-  const status=document.getElementById('fetch-status');
-  const cards=document.getElementById('signal-cards');
-  btn.disabled=true; icon.innerHTML='<div class="spin"></div>';
-  txt.textContent='CONNECTING TO GMAIL...'; status.textContent=''; cards.innerHTML='';
+
+  const btn = document.getElementById('fetchBtn');
+  const icon = document.getElementById('fetchIcon');
+  const txt = document.getElementById('fetchTxt');
+  const status = document.getElementById('fetch-status');
+  const cards = document.getElementById('signal-cards');
+
+  btn.disabled = true;
+  icon.innerHTML = '<div class="spin"></div>';
+  txt.textContent = 'CONNECTING TO GMAIL...';
+  status.textContent = '';
+  cards.innerHTML = '';
+
   try {
-    const response=await fetch("https://script.google.com/macros/s/AKfycbzZD6TytD_V-mimwsB1vk3EcRf13fBGUDWHwmthm4KPevM9wyambrmhNMZSkDhk_258/exec");
-    const signals=await response.json();
-    if (!signals||signals.length===0) {
-      status.textContent='📭 No actionable signals found in latest email.';
-      icon.textContent='📬'; txt.textContent='FETCH LATEST MONSTER FX SIGNALS FROM GMAIL';
-      btn.disabled=false; return;
+
+    const response = await fetch(
+      "https://script.google.com/macros/s/AKfycbzZD6TytD_V-mimwsB1vk3EcRf13fBGUDWHwmthm4KPevM9wyambrmhNMZSkDhk_258/exec"
+    );
+
+    const signals = await response.json();
+
+    if (!signals || signals.length === 0) {
+
+      status.textContent =
+        '📭 No actionable signals found in latest email.';
+
+      icon.textContent = '📬';
+      txt.textContent =
+        'FETCH LATEST MONSTER FX SIGNALS FROM GMAIL';
+
+      btn.disabled = false;
+      return;
     }
-    status.textContent=`✅ Found ${signals.length} signal(s) from Gmail`;
-    window.gmailSignals=signals;
-    cards.innerHTML=signals.map((s,i)=>`
-      <div class="sig-card ${s.dir}" onclick="autoFill(${i})">
-        <div class="sig-pair">${FLAGS[s.pair]||'🌐'}</div>
+
+    status.textContent =
+      `✅ Found ${signals.length} signal(s) from Gmail`;
+
+    window.gmailSignals = signals;
+    cards.innerHTML = signals.map((s, i) => `
+      <div class="sig-card ${s.dir}"
+           onclick="autoFill(${i})">
+
+        <div class="sig-pair">
+          ${FLAGS[s.pair] || '🌐'}
+        </div>
+
         <div class="sig-info">
           <strong>${s.pair}</strong>
-          <span>Entry: ${s.entry} | TP: ${s.tp} | SL: ${s.sl}</span>
-          <span style="color:var(--accent3)">${s.setup||''}</span>
+
+          <span>
+            Entry: ${s.entry}
+            | TP: ${s.tp}
+            | SL: ${s.sl}
+          </span>
+
+          <span style="color:var(--accent3)">
+            ${s.setup || ''}
+          </span>
         </div>
-        <span class="sig-dir ${s.dir}">${s.dir==='BUY'?'📈':'📉'} ${s.dir}</span>
-      </div>`).join('');
-  } catch(e) {
+
+        <span class="sig-dir ${s.dir}">
+          ${s.dir === 'BUY' ? '📈' : '📉'} ${s.dir}
+        </span>
+
+      </div>
+    `).join('');
+
+  }
+  catch (e) {
+
     console.error(e);
-    status.textContent='❌ Gmail connection failed.';
+
+    status.textContent =
+      '❌ Gmail connection failed.';
+
   }
-  icon.textContent='📬'; txt.textContent='FETCH LATEST MONSTER FX SIGNALS FROM GMAIL'; btn.disabled=false;
+
+  icon.textContent = '📬';
+
+  txt.textContent =
+    'FETCH LATEST MONSTER FX SIGNALS FROM GMAIL';
+
+  btn.disabled = false;
 }
-
-function autoFill(idx) {
-  const s=window.gmailSignals[idx];
-  if(!s){alert("Signal not found");return;}
-  const pairMap={"AUJP":"AUD/JPY","AUUS":"AUD/USD","USJP":"USD/JPY","GBAU":"GBP/AUD"};
-  s.pair=pairMap[s.pair]||s.pair;
-  document.getElementById('f-pair').value=s.pair||'';
-  document.getElementById('f-entry').value=s.entry||'';
-  document.getElementById('f-tp').value=s.tp||'';
-  document.getElementById('f-sl').value=s.sl||'';
-  document.getElementById('f-lev').value=parseInt(String(s.lev).replace('x',''))||250;
-  document.getElementById('f-conf').value=Math.round((s.conf||0)*100);
-  if(s.setup) document.getElementById('f-setup').value=s.setup;
-  selDir=s.dir;
-  document.querySelectorAll('.db').forEach(b=>b.classList.remove('active'));
-  const dirBtn=document.querySelector(`.db.${s.dir.toLowerCase()}`);
-  if(dirBtn) dirBtn.classList.add('active');
-  updateVerdict(); calcRisk();
-  showToast(`📥 ${s.pair} loaded from Gmail`,'ok');
-  // Switch to Log tab on mobile
-  if(document.body.classList.contains('mob')||window.innerWidth<=768) {
-    switchTab(3, document.querySelector('.mob-nav-item[data-tab="3"]'));
-  }
-}
-
-/* ════════════════════════════════════
-   ██████  RECOVERY ENGINE  ██████
-════════════════════════════════════ */
-
-// Calculate trades needed to recover
-// EV per trade = WR * alloc - (1-WR) * alloc (for 1:1 RR)
-// = alloc * (2*WR - 1)
-// We simulate compounding: capital * (1 + EV)^n >= target
-function calcTradesNeeded(lostAmt, currentCap, allocPct, winRate=0.57) {
-  if (lostAmt <= 0) return 0;
-  const target = currentCap + lostAmt;
-  const alloc = allocPct / 100;
-  const ev = alloc * (2 * winRate - 1); // per trade expected value fraction
-  if (ev <= 0) return 999;
-  let cap = currentCap, n = 0;
-  while (cap < target && n < 200) {
-    cap = cap * (1 + ev);
-    n++;
-  }
-  return n;
-}
-
-function openRecovery(trade) {
-  if (!trade) return;
-  currentRecoveryTrade = trade;
-  pickedScenario = null;
-
-  const lostAmt = trade.pnlAmt !== null ? Math.abs(trade.pnlAmt) : 0;
-  const capAfter = trade.capitalAfter || currentCapital();
-  const drawdown = lostAmt > 0 ? (lostAmt / (capAfter + lostAmt) * 100) : 0;
-
-  // Fill summary
-  document.getElementById('rec-trade-label').textContent =
-    `${FLAGS[trade.pair]||'🌐'} ${trade.pair} ${trade.dir} — ${trade.setup||''}`;
-  document.getElementById('rec-loss-amt').textContent = '-$' + lostAmt.toFixed(2);
-  document.getElementById('rec-cap-after').textContent = '$' + capAfter.toFixed(2);
-  document.getElementById('rec-drawdown').textContent = drawdown.toFixed(1) + '%';
-
-  // Calculate scenarios
-  const scenarios = [
-    { id:'c', alloc:5, wr:0.55, el:'sc-trades-c', alloc_el:'sc-alloc-c' },
-    { id:'b', alloc:10, wr:0.57, el:'sc-trades-b', alloc_el:'sc-alloc-b' },
-    { id:'a', alloc:15, wr:0.60, el:'sc-trades-a', alloc_el:'sc-alloc-a' }
-  ];
-
-  let minTrades = 999, bestScenario = null;
-  scenarios.forEach(sc => {
-    const n = calcTradesNeeded(lostAmt, capAfter, sc.alloc, sc.wr);
-    document.getElementById(sc.el).textContent = n >= 200 ? '∞' : String(n);
-    document.getElementById(sc.alloc_el).textContent = sc.alloc + '%';
-    if (n < minTrades) { minTrades = n; bestScenario = 'balanced'; }
-  });
-
-  // BEP trades (default balanced)
-  const bepTrades = calcTradesNeeded(lostAmt, capAfter, 10, 0.57);
-  document.getElementById('rec-bep-trades').textContent = bepTrades >= 200 ? '∞' : bepTrades;
-  document.getElementById('rec-bep-detail').textContent = 'Using 10% alloc / 57% WR / 1:1 RR';
-
-  // EV bar — progress toward recovery (how much current cap is toward target)
-  const recProgress = lostAmt > 0 ? Math.min(100, (capAfter / (capAfter + lostAmt)) * 100) : 100;
-  document.getElementById('rec-ev-bar').style.width = recProgress.toFixed(1) + '%';
-  document.getElementById('ev-mid-label').textContent = recProgress.toFixed(0) + '% of target';
-
-  // Path steps default (balanced)
-  buildRecoveryPath(lostAmt, capAfter, 10, 0.57);
-
-  document.getElementById('recoveryModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-}
-
-function buildRecoveryPath(lostAmt, currentCap, allocPct, winRate) {
-  const container = document.getElementById('rec-path-steps');
-  const target = currentCap + lostAmt;
-  const alloc = allocPct / 100;
-  const ev = alloc * (2 * winRate - 1);
-  if (ev <= 0) { container.innerHTML = '<div style="font-size:10px;color:var(--accent2);font-family:Share Tech Mono">Cannot recover with these settings</div>'; return; }
-
-  let cap = currentCap;
-  const steps = [];
-  let n = 0;
-  while (cap < target && n < 30) {
-    cap = cap * (1 + ev);
-    n++;
-    const isRecovered = cap >= target;
-    const isMilestone = n % 5 === 0;
-    steps.push({ n, cap: cap.toFixed(2), isRecovered, isMilestone });
-    if (isRecovered) break;
-  }
-  if (n >= 30) {
-    container.innerHTML = '<div style="font-size:10px;color:var(--muted);font-family:Share Tech Mono">Recovery path > 30 trades. Reduce leverage or increase allocation.</div>';
-    return;
-  }
-  container.innerHTML = steps.map(s => {
-    const cls = s.isRecovered ? 'path-step recovered' : s.isMilestone ? 'path-step milestone' : 'path-step';
-    return `<div class="${cls}" title="Trade ${s.n}: $${s.cap}">
-      ${s.isRecovered ? '✓' : s.n}
-      <div class="step-tooltip">Trade ${s.n}<br>Cap: $${s.cap}${s.isRecovered ? '<br>✅ RECOVERED!' : ''}</div>
-    </div>`;
-  }).join('');
-}
-
-function pickScenario(type, el) {
-  pickedScenario = type;
-  document.querySelectorAll('.sc-card').forEach(c => c.classList.remove('picked'));
-  el.classList.add('picked');
-
-  const trade = currentRecoveryTrade;
-  if (!trade) return;
-
-  const lostAmt = trade.pnlAmt !== null ? Math.abs(trade.pnlAmt) : 0;
-  const capAfter = trade.capitalAfter || currentCapital();
-
-  const configs = {
-    conservative: { alloc: 5, wr: 0.55 },
-    balanced:     { alloc: 10, wr: 0.57 },
-    aggressive:   { alloc: 15, wr: 0.60 }
-  };
-  const cfg = configs[type];
-  const bepTrades = calcTradesNeeded(lostAmt, capAfter, cfg.alloc, cfg.wr);
-  document.getElementById('rec-bep-trades').textContent = bepTrades >= 200 ? '∞' : bepTrades;
-  document.getElementById('rec-bep-detail').textContent = `${cfg.alloc}% alloc / ${Math.round(cfg.wr*100)}% WR / 1:1 RR`;
-
-  buildRecoveryPath(lostAmt, capAfter, cfg.alloc, cfg.wr);
-
-  showToast(`📋 ${type.toUpperCase()} recovery selected`, 'ok');
-}
-
-function applyRecoverySettings() {
-  const type = pickedScenario || 'balanced';
-  const configs = {
-    conservative: { alloc: 5, conf: 55, lev: 150 },
-    balanced:     { alloc: 10, conf: 57, lev: 250 },
-    aggressive:   { alloc: 15, conf: 60, lev: 200 }
-  };
-  const cfg = configs[type];
-  document.getElementById('f-alloc').value = cfg.alloc;
-  document.getElementById('f-lev').value = cfg.lev;
-  calcRisk();
-  closeRecovery();
-  showToast(`⚡ ${type.toUpperCase()} settings applied to form`, 'ok');
-  // Switch to log tab
-  if (document.body.classList.contains('mob') || window.innerWidth <= 768) {
-    switchTab(3, document.querySelector('.mob-nav-item[data-tab="3"]'));
-  }
-}
-
-function closeRecovery() {
-  document.getElementById('recoveryModal').classList.remove('open');
-  document.body.style.overflow = '';
-}
-
-function closeModalOutside(e) {
-  if (e.target === document.getElementById('recoveryModal')) closeRecovery();
-}
-
 /* ════════════════════════════════════
    EXPORT
 ════════════════════════════════════ */
 function exportCSV() {
   if(!trades.length){showToast('No trades to export','err');return;}
   const headers=['#','Pair','Direction','Entry','TP','SL','Leverage','Confidence%','Allocation%','Result','PnL%','PnL_Amount','Capital_After','Setup','Time'];
-  const rows=trades.map((t,i)=>[trades.length-i,t.pair,t.dir,t.entry,t.tp||'',t.sl||'',t.lev,t.conf,t.alloc,t.result,t.pnlPct??'',t.pnlAmt??'',t.capitalAfter??'',`"${t.setup}"`,t.time]);
+  const rows=trades.map((t,i)=>[
+    trades.length-i,t.pair,t.dir,t.entry,t.tp||'',t.sl||'',t.lev,t.conf,t.alloc,
+    t.result,t.pnlPct??'',t.pnlAmt??'',t.capitalAfter??'',`"${t.setup}"`,t.time
+  ]);
   const csv=[headers,...rows].map(r=>r.join(',')).join('\n');
   download('monster_fx_journal.csv','text/csv',csv);
   showToast('📄 CSV exported!','ok');
 }
+
 function exportJSON() {
   if(!trades.length){showToast('No trades to export','err');return;}
-  download('monster_fx_journal.json','application/json',JSON.stringify({exported:new Date().toISOString(),startingCapital:STARTING_CAPITAL,currentCapital:currentCapital(),trades},null,2));
+  download('monster_fx_journal.json','application/json',JSON.stringify({
+    exported:new Date().toISOString(),startingCapital:STARTING_CAPITAL,
+    currentCapital:currentCapital(),trades
+  },null,2));
   showToast('📦 JSON exported!','ok');
 }
+
 function exportModelCSV() {
   if(!trades.length){showToast('No trades to export','err');return;}
   const closed=trades.filter(t=>t.result!=='PENDING');
-  if(!closed.length){showToast('No completed trades','err');return;}
+  if(!closed.length){showToast('No completed trades for model training','err');return;}
   const headers=['pair','direction','entry','confidence','leverage','pnl_pct','result_label','setup','win_binary'];
-  const rows=closed.map(t=>[t.pair,t.dir,t.entry,t.conf,t.lev,t.pnlPct??'',t.result,`"${t.setup}"`,t.result==='WIN'?1:0]);
+  const rows=closed.map(t=>[
+    t.pair,t.dir,t.entry,t.conf,t.lev,t.pnlPct??'',t.result,`"${t.setup}"`,
+    t.result==='WIN'?1:0
+  ]);
   const csv=[headers,...rows].map(r=>r.join(',')).join('\n');
   download('monster_fx_model_training.csv','text/csv',csv);
-  showToast('🧠 Model CSV exported!','ok');
+  showToast('🧠 Model training CSV exported!','ok');
 }
+
 function clearAll() {
   if(!confirm('Clear ALL trade data? This cannot be undone.'))return;
   trades=[];save();render();
   showToast('🗑 All data cleared');
 }
+
 function download(filename,mime,content) {
   const a=document.createElement('a');
   a.href=URL.createObjectURL(new Blob([content],{type:mime}));
@@ -1788,37 +1122,69 @@ function download(filename,mime,content) {
    UTILS
 ════════════════════════════════════ */
 function save(){localStorage.setItem('mfx_trades',JSON.stringify(trades));}
+
 function showToast(msg,type='') {
   const t=document.getElementById('toast');
   t.textContent=msg; t.className='toast '+(type||'')+' show';
   setTimeout(()=>t.classList.remove('show'),3000);
 }
 
-/* ════════════════════════════════════
-   INIT
-════════════════════════════════════ */
+// Init
 render(); calcRisk();
-window.addEventListener('resize',()=>{ if(trades.length) renderEquity(); });
+window.addEventListener('resize',()=>{if(trades.length)renderEquity();});
 
-// Auto-detect mobile screen on load
-window.addEventListener('DOMContentLoaded', () => {
-  applyMobileMode();
-  if (window.innerWidth <= 768 && !document.body.classList.contains('mob')) {
-    document.body.classList.add('mob');
-    document.body.classList.remove('desk');
-    // Activate first tab
-    switchTab(0, document.querySelector('.mob-nav-item[data-tab="0"]'));
-  }
-});
+function autoFill(idx) {
 
-// Re-check on resize
-window.addEventListener('resize', () => {
-  if (window.innerWidth <= 768 && !localStorage.getItem('mfx_mobile')) {
-    document.body.classList.add('mob');
-    document.body.classList.remove('desk');
+  const s = window.gmailSignals[idx];
+  console.log("Signal clicked:", s);
+
+  if (!s) {
+    alert("Signal not found");
+    return;
   }
-  renderEquity();
-});
+
+  const pairMap = {
+    "AUJP":"AUD/JPY",
+    "AUUS":"AUD/USD",
+    "USJP":"USD/JPY",
+    "GBAU":"GBP/AUD"
+  };
+
+  s.pair = pairMap[s.pair] || s.pair;
+
+  document.getElementById('f-pair').value = s.pair || '';
+  document.getElementById('f-entry').value = s.entry || '';
+  document.getElementById('f-tp').value = s.tp || '';
+  document.getElementById('f-sl').value = s.sl || '';
+
+  document.getElementById('f-lev').value =
+      parseInt(String(s.lev).replace('x','')) || 250;
+
+  document.getElementById('f-conf').value =
+      Math.round((s.conf || 0) * 100);
+
+  if (s.setup) {
+      document.getElementById('f-setup').value = s.setup;
+  }
+
+  selDir = s.dir;
+
+  document.querySelectorAll('.db')
+      .forEach(b => b.classList.remove('active'));
+
+  const dirBtn =
+      document.querySelector(`.db.${s.dir.toLowerCase()}`);
+
+  if (dirBtn) {
+      dirBtn.classList.add('active');
+  }
+
+  updateVerdict();
+  calcRisk();
+
+  showToast(`📥 ${s.pair} loaded from Gmail`,'ok');
+}
 </script>
 </body>
 </html>
+

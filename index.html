@@ -542,33 +542,37 @@ body.app-mode .j-table td::before{content:attr(data-label);font-size:10px;color:
       </div>
 
       <!-- RECOVERY VIEW -->
-      <div class="view-group" id="view-recovery">
-        <div class="panel">
-          <div class="ph"><h2>🛡️ Drawdown Recovery</h2></div>
-          <div class="pb">
-            <div class="fr">
-              <div class="fg"><label>Deficit ($)</label><input type="number" id="rec-target" value="0" min="0" step="0.01" oninput="runRecovery()"></div>
-              <div class="fg"><label>Strategy</label>
-                <select id="rec-strategy" onchange="runRecovery()">
-                  <option value="3">🟢 Balanced (3 Tiers)</option>
-                  <option value="2" selected>🟡 Fast (2 Tiers)</option>
-                  <option value="1">🔴 Max Consolidation (1 Tier)</option>
-                </select>
-              </div>
-            </div>
-            <div id="rec-output" style="background:var(--input-bg);border:1px solid var(--card-border);border-radius:8px;padding:14px;font-family:var(--font-mono);font-size:12px;line-height:1.8;color:var(--text2)">System clear. No deficit loaded.</div>
-          </div>
-        </div>
-        <div class="panel">
-          <div class="ph"><h2>🧠 Risk Directives</h2></div>
-          <div class="pb">
-            <div class="rule-card g"><div><div class="rule-title" style="color:var(--win)">System Clear</div><div class="rule-desc">Confidence ≥55% allows forward execution. Optimal: ≥65% with aligned trend.</div></div></div>
-            <div class="rule-card y"><div><div class="rule-title" style="color:var(--gold)">Bounded Volatility</div><div class="rule-desc">Liquidity sweeps trigger 50% leverage de-escalation immediately.</div></div></div>
-            <div class="rule-card r"><div><div class="rule-title" style="color:var(--loss)">Critical Warning</div><div class="rule-desc">Never exceed 15% net liquidity per single trade. Liquidation risk critical.</div></div></div>
-          </div>
+<div class="view-group" id="view-recovery">
+  <div class="panel">
+    <div class="ph"><h2>🔥 Recovery War Room</h2></div>
+    <div class="pb">
+      <div class="fr">
+        <div class="fg"><label>Deficit ($)</label><input type="number" id="rec-target" value="0" min="0" step="0.01" oninput="runRecovery()"></div>
+        <div class="fg"><label>Risk Appetite</label>
+          <select id="rec-strategy" onchange="runRecovery()">
+            <option value="conservative">🟢 Conservative (1-3% / trade)</option>
+            <option value="balanced" selected>🟡 Balanced (3-6% / trade)</option>
+            <option value="aggressive">🔴 Aggressive (6-10% / trade)</option>
+            <option value="sniper">⚡ Sniper (1 trade, max edge)</option>
+          </select>
         </div>
       </div>
-
+      <div class="fr">
+        <div class="fg"><label>Win Rate % (your avg)</label><input type="number" id="rec-wr" value="60" min="1" max="99" oninput="runRecovery()"></div>
+        <div class="fg"><label>Avg RR Ratio</label><input type="number" id="rec-rr" value="2" min="0.1" step="0.1" oninput="runRecovery()"></div>
+      </div>
+      <div id="rec-output" style="margin-top:4px"></div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="ph"><h2>🧠 Risk Directives</h2></div>
+    <div class="pb">
+      <div class="rule-card g"><div><div class="rule-title" style="color:var(--win)">System Clear</div><div class="rule-desc">Confidence ≥55% allows forward execution. Optimal: ≥65% with aligned trend.</div></div></div>
+      <div class="rule-card y"><div><div class="rule-title" style="color:var(--gold)">Bounded Volatility</div><div class="rule-desc">Liquidity sweeps trigger 50% leverage de-escalation immediately.</div></div></div>
+      <div class="rule-card r"><div><div class="rule-title" style="color:var(--loss)">Critical Warning</div><div class="rule-desc">Never exceed 15% net liquidity per single trade. Liquidation risk critical.</div></div></div>
+    </div>
+  </div>
+</div>
     </div><!-- /col-right -->
   </div><!-- /main-layout -->
 </div><!-- /wrap -->
@@ -1027,28 +1031,168 @@ function autoFill(i) {
 function runRecovery() {
   const deficit = parseFloat(document.getElementById('rec-target').value) || 0;
   const el = document.getElementById('rec-output');
-  if (!deficit || deficit <= 0) { el.innerHTML = 'System clear. No deficit loaded.'; return; }
-
-  const tiers = parseInt(document.getElementById('rec-strategy').value);
-  const cap = getCap();
-  let html = `<div style="color:var(--text);font-weight:700;margin-bottom:10px;font-size:13px">Deficit: $${deficit.toFixed(2)} | Available Capital: $${cap.toFixed(2)}</div>`;
-
-  let remaining = deficit;
-  for (let i = 1; i <= tiers; i++) {
-    const tierTarget = remaining / (tiers - i + 1);
-    const pct = (tierTarget / cap * 100);
-    const safe = pct <= 15;
-    html += `<div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--card-border);padding:8px 0;gap:8px">
-      <span style="color:var(--text2)">Tier ${i}</span>
-      <span style="color:var(--gold);font-weight:700">+$${tierTarget.toFixed(2)}</span>
-      <span>${pct.toFixed(1)}% cap</span>
-      <span style="color:var(--${safe ? 'win' : 'loss'})">${safe ? '✔ SAFE' : '⚠ RISK'}</span>
-    </div>`;
-    remaining -= tierTarget;
+  if (!deficit || deficit <= 0) {
+    el.innerHTML = '<div style="background:var(--input-bg);border:1px solid var(--card-border);border-radius:8px;padding:14px;font-family:var(--font-mono);font-size:12px;color:var(--text2)">System clear. No deficit loaded.</div>';
+    return;
   }
-  el.innerHTML = html;
-}
 
+  const cap = getCap();
+  const wr = (parseFloat(document.getElementById('rec-wr').value) || 60) / 100;
+  const rr = parseFloat(document.getElementById('rec-rr').value) || 2;
+  const mode = document.getElementById('rec-strategy').value;
+
+  // Risk % per trade based on mode
+  const riskMap = { conservative: 0.025, balanced: 0.05, aggressive: 0.08, sniper: 0.12 };
+  const riskPct = riskMap[mode];
+
+  // Mathematical edge = (wr * rr) - (1 - wr)
+  const edge = (wr * rr) - (1 - wr);
+  const edgePct = (edge * 100).toFixed(1);
+
+  // Kelly criterion for optimal sizing
+  const kelly = Math.max(0, (wr - (1 - wr) / rr));
+  const halfKelly = kelly * 0.5; // Half Kelly = safer
+  const usedRisk = Math.min(riskPct, halfKelly > 0 ? halfKelly : riskPct);
+
+  // How many trades to recover using compound growth
+  // Each win gives: cap * usedRisk * rr
+  // Each loss costs: cap * usedRisk
+  // Simulate compounding path
+  let simCap = cap;
+  let tradesNeeded = 0;
+  let totalTrades = 0;
+  const maxTrades = 200;
+  const path = [];
+
+  // Expected value path (not simulation — pure math)
+  // Use geometric growth: after N trades with wr and rr
+  // E[capital] = cap * (1 + usedRisk*rr)^(N*wr) * (1 - usedRisk)^(N*(1-wr))
+  // Solve for N where E[capital] >= cap + deficit
+  let tempCap = cap;
+  for (let i = 1; i <= maxTrades; i++) {
+    const winGain = tempCap * usedRisk * rr;
+    const lossHit = tempCap * usedRisk;
+    // Expected change per trade
+    const expectedGain = (wr * winGain) - ((1 - wr) * lossHit);
+    tempCap += expectedGain;
+    path.push({ trade: i, cap: Math.round(tempCap * 100) / 100 });
+    if (tempCap >= cap + deficit && tradesNeeded === 0) tradesNeeded = i;
+    if (tempCap >= cap + deficit) { totalTrades = i; break; }
+  }
+
+  // Worst case: consecutive losses before recovery
+  const maxConsecLoss = Math.ceil(Math.log(0.5) / Math.log(1 - usedRisk)); // 50% drawdown point
+  const perTradeRisk = cap * usedRisk;
+  const perTradeProfit = cap * usedRisk * rr;
+
+  // Probability of recovery within tradesNeeded trades
+  // P(recovery) ≈ 1 - (1-wr)^tradesNeeded (simplified binomial)
+  const probRecovery = tradesNeeded > 0
+    ? Math.min(99.9, (1 - Math.pow(1 - wr, Math.ceil(tradesNeeded / rr))) * 100)
+    : 0;
+
+  // Build milestone chart
+  const milestones = path.filter((p, i) => i === 0 || (i + 1) % Math.max(1, Math.floor(tradesNeeded / 5)) === 0 || p.trade === tradesNeeded).slice(0, 6);
+
+  const edgeColor = edge > 0 ? 'var(--win)' : 'var(--loss)';
+  const edgeLabel = edge > 0 ? '✅ POSITIVE EDGE' : '❌ NEGATIVE EDGE — DO NOT TRADE';
+
+  const modeLabels = { conservative: 'Conservative', balanced: 'Balanced', aggressive: 'Aggressive', sniper: 'Sniper Mode' };
+
+  el.innerHTML = `
+    <!-- HEADER SUMMARY -->
+    <div style="background:var(--input-bg);border:1px solid var(--card-border);border-radius:8px;padding:14px;margin-bottom:10px">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">
+        <div style="text-align:center;padding:10px;background:var(--loss-bg);border:1px solid var(--loss);border-radius:7px">
+          <div style="font-size:9px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Deficit to Recover</div>
+          <div style="font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--loss)">-$${deficit.toFixed(2)}</div>
+        </div>
+        <div style="text-align:center;padding:10px;background:var(--win-bg);border:1px solid var(--win);border-radius:7px">
+          <div style="font-size:9px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px">Available Capital</div>
+          <div style="font-family:var(--font-mono);font-size:22px;font-weight:700;color:var(--win)">$${cap.toFixed(2)}</div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+        <div style="text-align:center;padding:8px;background:var(--card-bg);border-radius:6px">
+          <div style="font-size:9px;color:var(--text2);font-weight:700;text-transform:uppercase;margin-bottom:3px">Your Edge</div>
+          <div style="font-family:var(--font-mono);font-size:13px;font-weight:700;color:${edgeColor}">${edgePct}%</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:var(--card-bg);border-radius:6px">
+          <div style="font-size:9px;color:var(--text2);font-weight:700;text-transform:uppercase;margin-bottom:3px">Trades Needed</div>
+          <div style="font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--gold)">${tradesNeeded > 0 ? tradesNeeded : '∞'}</div>
+        </div>
+        <div style="text-align:center;padding:8px;background:var(--card-bg);border-radius:6px">
+          <div style="font-size:9px;color:var(--text2);font-weight:700;text-transform:uppercase;margin-bottom:3px">Recovery Prob</div>
+          <div style="font-family:var(--font-mono);font-size:13px;font-weight:700;color:var(--accent)">${probRecovery.toFixed(1)}%</div>
+        </div>
+      </div>
+    </div>
+
+    ${edge <= 0 ? `<div style="background:var(--loss-bg);border:1px solid var(--loss);border-radius:8px;padding:12px;margin-bottom:10px;font-size:12px;color:var(--loss);font-weight:700;text-align:center">🚫 YOUR CURRENT STATS SHOW NEGATIVE EDGE. FIX WIN RATE OR RR BEFORE TRADING.</div>` : ''}
+
+    <!-- RECOVERY PLAN -->
+    <div style="background:var(--input-bg);border:1px solid var(--card-border);border-radius:8px;padding:14px;margin-bottom:10px">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--accent);margin-bottom:10px">⚔️ ${modeLabels[mode]} Recovery Plan</div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--card-border);font-family:var(--font-mono);font-size:12px">
+        <span style="color:var(--text2)">Risk per trade</span>
+        <span style="color:var(--text);font-weight:700">${(usedRisk*100).toFixed(2)}% = $${(cap*usedRisk).toFixed(2)}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--card-border);font-family:var(--font-mono);font-size:12px">
+        <span style="color:var(--text2)">Profit per win</span>
+        <span style="color:var(--win);font-weight:700">+$${(cap*usedRisk*rr).toFixed(2)}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--card-border);font-family:var(--font-mono);font-size:12px">
+        <span style="color:var(--text2)">Loss per trade</span>
+        <span style="color:var(--loss);font-weight:700">-$${(cap*usedRisk).toFixed(2)}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--card-border);font-family:var(--font-mono);font-size:12px">
+        <span style="color:var(--text2)">Half-Kelly optimal size</span>
+        <span style="color:var(--gold);font-weight:700">${(halfKelly*100).toFixed(2)}%</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--card-border);font-family:var(--font-mono);font-size:12px">
+        <span style="color:var(--text2)">Max safe consec. losses</span>
+        <span style="color:var(--loss);font-weight:700">${maxConsecLoss} before -50% cap</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:8px 0;font-family:var(--font-mono);font-size:12px">
+        <span style="color:var(--text2)">Edge per trade</span>
+        <span style="font-weight:700;color:${edgeColor}">${edgeLabel}</span>
+      </div>
+    </div>
+
+    <!-- RECOVERY MILESTONES -->
+    ${tradesNeeded > 0 ? `
+    <div style="background:var(--input-bg);border:1px solid var(--card-border);border-radius:8px;padding:14px;margin-bottom:10px">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text2);margin-bottom:10px">📈 Compound Recovery Path</div>
+      ${milestones.map(m => {
+        const recovered = Math.min(m.cap - cap, deficit);
+        const pct = Math.min(100, (recovered / deficit) * 100);
+        const done = pct >= 100;
+        return `<div style="margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;font-family:var(--font-mono);font-size:11px;margin-bottom:4px">
+            <span style="color:var(--text2)">Trade ${m.trade}</span>
+            <span style="color:${done ? 'var(--win)' : 'var(--gold)'}">$${m.cap.toFixed(2)} ${done ? '✅ RECOVERED' : ''}</span>
+          </div>
+          <div style="background:var(--card-border);border-radius:4px;height:5px;overflow:hidden">
+            <div style="height:100%;width:${pct}%;background:${done ? 'var(--win)' : 'var(--accent)'};border-radius:4px;transition:.3s"></div>
+          </div>
+        </div>`;
+      }).join('')}
+    </div>` : ''}
+
+    <!-- PSYCHOLOGICAL RULES -->
+    <div style="background:var(--input-bg);border:1px solid var(--card-border);border-radius:8px;padding:14px">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.8px;color:var(--text2);margin-bottom:10px">🧠 Trader's Recovery Rules</div>
+      <div style="font-size:11px;color:var(--text2);line-height:1.9">
+        <div>🔒 <b style="color:var(--text)">Do NOT revenge trade.</b> Stick to your normal setup criteria.</div>
+        <div>📏 <b style="color:var(--text)">Only trade A+ setups.</b> Conf ≥65%, aligned trend, clean structure.</div>
+        <div>🎯 <b style="color:var(--text)">One trade at a time.</b> No stacking positions during recovery.</div>
+        <div>⏸️ <b style="color:var(--text)">2 losses in a row = stop for the day.</b> Emotion is your enemy.</div>
+        <div>📈 <b style="color:var(--text)">Let compounding work.</b> ${tradesNeeded > 0 ? tradesNeeded : '?'} disciplined trades = full recovery.</div>
+        <div>💡 <b style="color:var(--text)">Risk stays fixed</b> at ${(usedRisk*100).toFixed(2)}% regardless of emotion.</div>
+      </div>
+    </div>
+  `;
+}
 // ── EXPORT ──
 function exportCSV() {
   if (!trades.length) return showToast('No trades to export');
